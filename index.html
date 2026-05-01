@@ -111,6 +111,22 @@ html, body {
   border-radius: 8px;
 }
 
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    overflow-x: auto;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+   .panel {
+    min-width: 100%;
+    flex: 0 0 100%;
+
+    scroll-snap-align: start;
+  }
+}
+    
   </style>
 </head>
 

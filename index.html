@@ -113,17 +113,25 @@ html, body {
 
 @media (max-width: 768px) {
   .container {
-    display: flex;
+    display: flex !important;          /* nadpisuje grid */
+    flex-direction: row;
     overflow-x: auto;
 
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
+
+    gap: 0;                            /* usuwa odstępy z grid */
+    padding: 0;
   }
-   .panel {
+
+  .panel {
+    flex: 0 0 100%;                    /* każdy panel = cały ekran */
     min-width: 100%;
-    flex: 0 0 100%;
 
     scroll-snap-align: start;
+
+    margin: 0;                         /* usuń marginesy */
+    border-radius: 0;                  /* opcjonalnie: full screen look */
   }
 }
     

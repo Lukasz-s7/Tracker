@@ -5,10 +5,17 @@
   <title>Dashboard</title>
 
   <style>
+
+html, body {
+  height: 100%;
+}
+    
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
+      display: flex;
+      flex-direction: column;
     }
 
     /* TOPBAR */
@@ -47,16 +54,18 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   padding: 10px;
+  flex: 1;
 }
 
     /* SINGLE PANEL */
     .panel {
       background-color: white;
       border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-      min-height: 80px;
-      flex: 1 1 calc(25% - 12px);
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+
+  display: flex;
+  flex-direction: column;
     }
 
     .panel-title {

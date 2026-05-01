@@ -9,7 +9,7 @@
 html, body {
   height: 100%;
 }
-    
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -20,24 +20,26 @@ html, body {
 
     /* TOPBAR */
     .topbar {
-       background-color: #2c3e50;
-  color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 
-  padding: 15px;
-  margin: 10px;
+      background-color: #e0e0e0;
+      color: #333;
 
-  border-radius: 12px;
+      padding: 15px 20px;
+      margin: 10px;
 
-  font-size: 18px;
-  font-weight: bold;
-  text-transform: uppercase;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  position: sticky;
-  top: 0;
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      text-align: center;
+      position: sticky;
+      top: 0;
     }
 
     .date {
@@ -51,7 +53,7 @@ html, body {
     }
 
     /* PANELS CONTAINER */
-    
+
     .container {
    display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -113,11 +115,11 @@ html, body {
   background-color: #bbb;
   border-radius: 8px;
 }
-    
+
   </style>
 </head>
 
-  
+
 <body>
 
   <!-- TOP BAR -->
@@ -156,32 +158,36 @@ html, body {
 </div>
 
   <script>
-    
+    function getPolishDayName(dayIndex) {
+      const days = [
+        "niedziela",
+        "poniedziałek",
+        "wtorek",
+        "środa",
+        "czwartek",
+        "piątek",
+        "sobota"
+      ];
+      return days[dayIndex];
+    }
+
     function updateClock() {
-  const now = new Date();
+      const now = new Date();
 
-  const days = [
-    "NIEDZIELA",
-    "PONIEDZIAŁEK",
-    "WTOREK",
-    "ŚRODA",
-    "CZWARTEK",
-    "PIĄTEK",
-    "SOBOTA"
-  ];
+      const dayName = getPolishDayName(now.getDay());
+      const day = String(now.getDate()).padStart(2, "0");
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const year = now.getFullYear();
 
-  const dayName = days[now.getDay()];
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
 
-  const day = String(now.getDate()).padStart(2, "0");
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const year = now.getFullYear();
+      document.getElementById("date").innerText =
+        `${dayName}, ${day}.${month}.${year}`;
 
-  const hours = String(now.getHours()).padStart(2, "0");
-  const minutes = String(now.getMinutes()).padStart(2, "0");
-
-  document.getElementById("topbar").innerText =
-    `${dayName} | ${day}.${month}.${year} | ${hours}:${minutes}`;
-}
+      document.getElementById("time").innerText =
+        `${hours}:${minutes}`;
+    }
 
     updateClock();
 

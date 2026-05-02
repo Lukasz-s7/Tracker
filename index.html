@@ -108,7 +108,8 @@ html, body {
 }
 
   .bottom-nav button.active {
-  background-color: #bbb;
+  background-color: #2c3e50;
+    color: white;
   border-radius: 8px;
 }
 
@@ -167,7 +168,7 @@ html, body {
   <div class="topbar" id="topbar"></div>
 
   <!-- PANELS -->
-  <div class="container">
+  <div id="dayView" class="container">
 
    <div class="panel">
   <div class="panel-title-center">HABITUM</div>
@@ -210,9 +211,29 @@ html, body {
 
   </div>
 
+  <div id="monthView" class="container" style="display: none;">
+  
+  <div class="panel">
+    <div class="panel-title">Miesiąc - Panel 1</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Miesiąc - Panel 2</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Miesiąc - Panel 3</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">Miesiąc - Panel 4</div>
+  </div>
+
+</div>
+
   <div class="bottom-nav">
-  <button>DZIEŃ</button>
-  <button>MIESIĄC</button>
+  <button id="dayBtn" class="active">DZIEŃ</button>
+  <button id="monthBtn">MIESIĄC</button>
   <button>ROK</button>
   <button>ŻYCIE</button>
 </div>
@@ -266,6 +287,29 @@ html, body {
       updateClock();
       setInterval(updateClock, 60000);
     }, secondsToNextMinute * 1000);
+
+const dayBtn = document.getElementById("dayBtn");
+const monthBtn = document.getElementById("monthBtn");
+
+const dayView = document.getElementById("dayView");
+const monthView = document.getElementById("monthView");
+
+dayBtn.addEventListener("click", () => {
+  dayView.style.display = "grid";
+  monthView.style.display = "none";
+
+  dayBtn.classList.add("active");
+  monthBtn.classList.remove("active");
+});
+
+monthBtn.addEventListener("click", () => {
+  dayView.style.display = "none";
+  monthView.style.display = "grid";
+
+  monthBtn.classList.add("active");
+  dayBtn.classList.remove("active");
+});
+    
   </script>
 
 </body>

@@ -135,6 +135,28 @@ html, body {
   margin-bottom: 6px;
 }
 
+    .list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 6px;
+}
+
+.list-row span {
+  font-size: 14px;
+}
+
+.list-row input {
+  width: 60px;
+  padding: 4px;
+
+  border: 1px solid #ccc;
+  border-radius: 6px;
+
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .container {
     display: flex !important;          /* nadpisuje grid */
@@ -211,8 +233,73 @@ html, body {
     </div>
 
     <div class="panel">
-      <div class="panel-title">Panel 4</div>
+  <div class="panel-title-center">RESOLUTIO</div>
+
+  <!-- LISTA 1 -->
+  <div class="section">
+    <div class="list-row">
+      <span>BGS</span>
+      <input type="number" />
     </div>
+    <div class="list-row">
+      <span>BTS</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>ICS</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>RNN</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>BCG</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>PGN</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>SPI</span>
+      <input type="number" />
+    </div>
+  </div>
+
+  <!-- ODSTĘP -->
+  <div style="margin-top: 16px;"></div>
+
+  <!-- CULTURA -->
+  <div class="section">
+    <div class="section-title">Cultura</div>
+
+    <div class="list-row">
+      <span>Książki</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>Filmy</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>Teatr</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>Gry</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>Muzyka</span>
+      <input type="number" />
+    </div>
+    <div class="list-row">
+      <span>Koncerty</span>
+      <input type="number" />
+    </div>
+  </div>
+</div>
 
   </div>
 

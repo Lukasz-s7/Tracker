@@ -444,19 +444,19 @@ monthView.classList.add("hidden");
 
 function saveCurrentDay() {
   const payload = {
-    date: getToday(),
-
+    date: new Date().toISOString().slice(0, 10),
     MRT: document.querySelectorAll('input[type="checkbox"]')[0].checked
   };
 
-  console.log("Wysyłam:", payload);
+  console.log("CLICK działa", payload);
 
-  fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec", {
-  method: "POST",
-  body: JSON.stringify(payload)
-});
-    
-});
+  // 🔥 NAJPROSTSZY możliwy request (bez fetch)
+  const url = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec"
+    + "?date=" + payload.date
+    + "&MRT=" + payload.MRT;
+
+  new Image().src = url;
+}
 }
 
 // 🔥 PODPINAMY WSZYSTKIE INPUTY

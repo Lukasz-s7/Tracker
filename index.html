@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tracker</title>
 
+<div id="dayView" class="container">
+<div id="monthView" class="container hidden">
+  
   <style>
 
 html, body {
@@ -157,6 +160,10 @@ html, body {
     border-radius: 0;                  /* opcjonalnie: full screen look */
   }
 }
+
+.hidden {
+  display: none !important;
+}
     
   </style>
 </head>
@@ -295,16 +302,16 @@ const dayView = document.getElementById("dayView");
 const monthView = document.getElementById("monthView");
 
 dayBtn.addEventListener("click", () => {
-  dayView.style.display = "grid";
-  monthView.style.display = "none";
+  dayView.classList.remove("hidden");
+  monthView.classList.add("hidden");
 
   dayBtn.classList.add("active");
   monthBtn.classList.remove("active");
 });
 
 monthBtn.addEventListener("click", () => {
-  dayView.style.display = "none";
-  monthView.style.display = "grid";
+  dayView.classList.add("hidden");
+  monthView.classList.remove("hidden");
 
   monthBtn.classList.add("active");
   dayBtn.classList.remove("active");

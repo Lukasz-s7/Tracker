@@ -409,6 +409,47 @@ monthBtn.addEventListener("click", () => {
 
 dayView.classList.remove("hidden");
 monthView.classList.add("hidden");
+
+    
+async function saveData(payload) {
+  await fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+    async function loadData() {
+  const res = await fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec");
+  return await res.json();
+}
+
+    checkbox.addEventListener("change", () => {
+  saveCurrentDay();
+});
+
+    input.addEventListener("change", () => {
+  saveCurrentDay();
+});
+
+    function getToday() {
+  const now = new Date();
+  return now.toISOString().slice(0, 10); // YYYY-MM-DD
+}
+
+    async function init() {
+  const today = getToday();
+  const data = await loadData();
+
+  const todayRow = data.find(r => r[0] === today);
+
+  if (todayRow) {
+    fillUI(todayRow);
+  } else {
+    clearUI();
+  }
+}
+    
+    
     
   </script>
 

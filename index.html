@@ -448,7 +448,24 @@ async function saveData(payload) {
     clearUI();
   }
 }
-    
+    function saveCurrentDay() {
+  const payload = {
+    date: new Date().toISOString().slice(0, 10),
+
+    MRT: document.querySelector('input[type="checkbox"]').checked
+  };
+
+  console.log("Wysyłam:", payload);
+
+  fetch("TU_WKLEJ_URL_APPS_SCRIPT", {
+    method: "POST",
+    body: JSON.stringify(payload)
+  });
+}
+
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener("change", saveCurrentDay);
+});
     
     
   </script>

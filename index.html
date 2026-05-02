@@ -411,26 +411,14 @@ dayView.classList.remove("hidden");
 monthView.classList.add("hidden");
 
     
-async function saveData(payload) {
-  await fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec", {
-    method: "POST",
-    body: JSON.stringify(payload)
-  });
-}
+
 
     async function loadData() {
   const res = await fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec");
   return await res.json();
 }
 
-    checkbox.addEventListener("change", () => {
-  saveCurrentDay();
-});
-
-    input.addEventListener("change", () => {
-  saveCurrentDay();
-});
-
+    
     function getToday() {
   const now = new Date();
   return now.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -448,24 +436,33 @@ async function saveData(payload) {
     clearUI();
   }
 }
-    function saveCurrentDay() {
-  const payload = {
-    date: new Date().toISOString().slice(0, 10),
 
-    MRT: document.querySelector('input[type="checkbox"]').checked
+    function getToday() {
+  const now = new Date();
+  return now.toISOString().slice(0, 10);
+}
+
+function saveCurrentDay() {
+  const payload = {
+    date: getToday(),
+
+    MRT: document.querySelectorAll('input[type="checkbox"]')[0].checked
   };
 
   console.log("Wysyłam:", payload);
 
-  fetch("TU_WKLEJ_URL_APPS_SCRIPT", {
+  fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec", {
     method: "POST",
     body: JSON.stringify(payload)
   });
 }
 
-    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-  cb.addEventListener("change", saveCurrentDay);
+// 🔥 PODPINAMY WSZYSTKIE INPUTY
+document.querySelectorAll('input').forEach(el => {
+  el.addEventListener("change", saveCurrentDay);
 });
+
+   
     
     
   </script>

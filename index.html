@@ -449,34 +449,28 @@ function saveCurrentDay() {
     MRT: document.getElementById("MRT")?.checked || false,
     ERT: document.getElementById("ERT")?.checked || false,
     TKS: document.getElementById("TKS")?.checked || false,
-
     BKS: document.getElementById("BKS")?.checked || false,
     DVP: document.getElementById("DVP")?.checked || false,
     KDS: document.getElementById("KDS")?.checked || false,
     RLT: document.getElementById("RLT")?.checked || false,
-
     BHB: document.getElementById("BHB")?.checked || false,
     WND: document.getElementById("WND")?.checked || false,
     CRB: document.getElementById("CRB")?.checked || false,
     WKT: document.getElementById("WKT")?.checked || false
   };
 
-  const base = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
+  console.log("PAYLOAD:", payload);
 
-  const url =
-  base
-  + "?date=" + payload.date
-  + "&MRT=" + (payload.MRT ? "true" : "false")
-  + "&ERT=" + (payload.ERT ? "true" : "false")
-  + "&TKS=" + (payload.TKS ? "true" : "false")
-  + "&BKS=" + (payload.BKS ? "true" : "false")
-  + "&DVP=" + (payload.DVP ? "true" : "false")
-  + "&KDS=" + (payload.KDS ? "true" : "false")
-  + "&RLT=" + (payload.RLT ? "true" : "false")
-  + "&BHB=" + (payload.BHB ? "true" : "false")
-  + "&WND=" + (payload.WND ? "true" : "false")
-  + "&CRB=" + (payload.CRB ? "true" : "false")
-  + "&WKT=" + (payload.WKT ? "true" : "false");
+  const params = new URLSearchParams();
+
+  Object.keys(payload).forEach(key => {
+    params.append(key, payload[key]);
+  });
+
+  const url = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec"
+    + "?" + params.toString();
+
+  console.log("URL:", url);
 
   new Image().src = url;
 }

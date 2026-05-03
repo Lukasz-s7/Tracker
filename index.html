@@ -464,19 +464,19 @@ function saveCurrentDay() {
   const base = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
 
   const url =
-    base
-    + "?date=" + payload.date
-    + "&MRT=" + payload.MRT
-    + "&ERT=" + payload.ERT
-    + "&TKS=" + payload.TKS
-    + "&BKS=" + payload.BKS
-    + "&DVP=" + payload.DVP
-    + "&KDS=" + payload.KDS
-    + "&RLT=" + payload.RLT
-    + "&BHB=" + payload.BHB
-    + "&WND=" + payload.WND
-    + "&CRB=" + payload.CRB
-    + "&WKT=" + payload.WKT;
+  base
+  + "?date=" + payload.date
+  + "&MRT=" + (payload.MRT ? "true" : "false")
+  + "&ERT=" + (payload.ERT ? "true" : "false")
+  + "&TKS=" + (payload.TKS ? "true" : "false")
+  + "&BKS=" + (payload.BKS ? "true" : "false")
+  + "&DVP=" + (payload.DVP ? "true" : "false")
+  + "&KDS=" + (payload.KDS ? "true" : "false")
+  + "&RLT=" + (payload.RLT ? "true" : "false")
+  + "&BHB=" + (payload.BHB ? "true" : "false")
+  + "&WND=" + (payload.WND ? "true" : "false")
+  + "&CRB=" + (payload.CRB ? "true" : "false")
+  + "&WKT=" + (payload.WKT ? "true" : "false");
 
   new Image().src = url;
 }

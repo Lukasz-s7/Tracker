@@ -444,26 +444,83 @@ monthView.classList.add("hidden");
 
 function saveCurrentDay() {
   const payload = {
-    date: new Date().toISOString().slice(0, 10),
-    MRT: document.querySelectorAll('input[type="checkbox"]')[0].checked
+    date: getToday(),
+
+    MRT: document.getElementById("MRT")?.checked || false,
+    ERT: document.getElementById("ERT")?.checked || false,
+    TKS: document.getElementById("TKS")?.checked || false,
+
+    BKS: document.getElementById("BKS")?.checked || false,
+    DVP: document.getElementById("DVP")?.checked || false,
+    KDS: document.getElementById("KDS")?.checked || false,
+    RLT: document.getElementById("RLT")?.checked || false,
+
+    BHB: document.getElementById("BHB")?.checked || false,
+    WND: document.getElementById("WND")?.checked || false,
+    CRB: document.getElementById("CRB")?.checked || false,
+    WKT: document.getElementById("WKT")?.checked || false
   };
 
-  console.log("CLICK działa", payload);
+  const base = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
 
-  // 🔥 NAJPROSTSZY możliwy request (bez fetch)
-  const url = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec"
+  const url =
+    base
     + "?date=" + payload.date
-    + "&MRT=" + payload.MRT;
+    + "&MRT=" + payload.MRT
+    + "&ERT=" + payload.ERT
+    + "&TKS=" + payload.TKS
+    + "&BKS=" + payload.BKS
+    + "&DVP=" + payload.DVP
+    + "&KDS=" + payload.KDS
+    + "&RLT=" + payload.RLT
+    + "&BHB=" + payload.BHB
+    + "&WND=" + payload.WND
+    + "&CRB=" + payload.CRB
+    + "&WKT=" + payload.WKT;
 
   new Image().src = url;
 }
 
-// 🔥 PODPINAMY WSZYSTKIE INPUTY
-document.querySelectorAll('input').forEach(el => {
-  el.addEventListener("change", saveCurrentDay);
+// 🔥 eventy dla checkboxów
+document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener("change", saveCurrentDay);
 });
 
-   
+
+
+    // ===== RESET DNIA O PÓŁNOCY =====
+
+// zwraca dzisiejszą datę w formacie YYYY-MM-DD
+function getToday() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+// inicjalizacja przy pierwszym uruchomieniu
+function initDateStorage() {
+  const stored = localStorage.getItem("lastDate");
+  const today = getToday();
+
+  if (!stored) {
+    localStorage.setItem("lastDate", today);
+  }
+}
+
+// sprawdzanie zmiany dnia
+function checkDateChange() {
+  const today = getToday();
+  const stored = localStorage.getItem("lastDate");
+
+  if (stored !== today) {
+    localStorage.setItem("lastDate", today);
+    location.reload(); // reset UI
+  }
+}
+
+// uruchomienie
+initDateStorage();
+
+// sprawdzanie co minutę
+setInterval(checkDateChange, 60000);
     
     
   </script>

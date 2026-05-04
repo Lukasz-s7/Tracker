@@ -248,67 +248,27 @@ html, body {
 
   <!-- LISTA 1 -->
   <div class="section">
-    <div class="list-row">
-      <span>BGS</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>BTS</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>ICS</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>RNN</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>BCG</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>PGN</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>SPI</span>
-      <input type="number" />
-    </div>
+    <div class="list-row"><span>BGS</span><input type="number" id="BGS"></div>
+    <div class="list-row"><span>BTS</span><input type="number" id="BTS"></div>
+    <div class="list-row"><span>ICS</span><input type="number" id="ICS"></div>
+    <div class="list-row"><span>RNN</span><input type="number" id="RNN"></div>
+    <div class="list-row"><span>BCG</span><input type="number" id="BCG"></div>
+    <div class="list-row"><span>PGN</span><input type="number" id="PGN"></div>
+    <div class="list-row"><span>SPI</span><input type="number" id="SPI"></div>
   </div>
 
-  <!-- ODSTĘP -->
   <div style="margin-top: 16px;"></div>
 
   <!-- CULTURA -->
   <div class="section">
     <div class="section-title">Cultura</div>
 
-    <div class="list-row">
-      <span>Książki</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>Filmy</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>Teatr</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>Gry</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>Muzyka</span>
-      <input type="number" />
-    </div>
-    <div class="list-row">
-      <span>Koncerty</span>
-      <input type="number" />
-    </div>
+    <div class="list-row"><span>Książki</span><input type="number" id="KSIAZKI"></div>
+    <div class="list-row"><span>Filmy</span><input type="number" id="FILMY"></div>
+    <div class="list-row"><span>Teatr</span><input type="number" id="TEATR"></div>
+    <div class="list-row"><span>Gry</span><input type="number" id="GRY"></div>
+    <div class="list-row"><span>Muzyka</span><input type="number" id="MUZYKA"></div>
+    <div class="list-row"><span>Koncerty</span><input type="number" id="KONCERTY"></div>
   </div>
 </div>
 
@@ -462,7 +422,21 @@ function saveCurrentDay() {
     BHB: document.getElementById("BHB")?.checked || false,
     WND: document.getElementById("WND")?.checked || false,
     CRB: document.getElementById("CRB")?.checked || false,
-    WKT: document.getElementById("WKT")?.checked || false
+    WKT: document.getElementById("WKT")?.checked || false,
+    BGS: getNumber("BGS"),
+    BTS: getNumber("BTS"),
+    ICS: getNumber("ICS"),
+    RNN: getNumber("RNN"),
+    BCG: getNumber("BCG"),
+    PGN: getNumber("PGN"),
+    SPI: getNumber("SPI"),
+
+    KSIAZKI: getNumber("KSIAZKI"),
+    FILMY: getNumber("FILMY"),
+    TEATR: getNumber("TEATR"),
+    GRY: getNumber("GRY"),
+    MUZYKA: getNumber("MUZYKA"),
+    KONCERTY: getNumber("KONCERTY"),
   };
 
   console.log("PAYLOAD:", payload);
@@ -521,7 +495,16 @@ initDateStorage();
 
 // sprawdzanie co minutę
 setInterval(checkDateChange, 60000);
-    
+
+    function getNumber(id) {
+  const el = document.getElementById(id);
+  return el && el.value !== "" ? Number(el.value) : 0;
+}
+
+document.querySelectorAll('input[type="number"]').forEach(inp => {
+  inp.addEventListener("change", saveCurrentDay);
+});
+
     
   </script>
 

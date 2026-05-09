@@ -431,10 +431,7 @@ monthView.classList.add("hidden");
 }
 
     
-    function getToday() {
-  const now = new Date();
-  return now.toISOString().slice(0, 10); // YYYY-MM-DD
-}
+  
 
     async function init() {
   const today = getToday();
@@ -449,10 +446,7 @@ monthView.classList.add("hidden");
   }
 }
 
-    function getToday() {
-  const now = new Date();
-  return now.toISOString().slice(0, 10);
-}
+
 
 function saveCurrentDay() {
   const payload = {
@@ -569,10 +563,10 @@ document.querySelectorAll('input[type="number"]').forEach(inp => {
 
     setProgress("mrtProgress", 100);
 
-async function loadTargets() {
-  const url = BASE_URL + "?mode=targets";
+const BASE_URL = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
 
-  const res = await fetch(url);
+async function loadTargets() {
+  const res = await fetch(BASE_URL + "?mode=targets");
   return await res.json();
 }
 
@@ -607,13 +601,18 @@ function calculateMRTProgress(data, target) {
     const d = new Date(row.date);
 
     if (d.getFullYear() === year && d.getMonth() === month) {
-      if (row.MRT === true || row.MRT === "TRUE") {
+      if (String(row.MRT).toLowerCase() === "true") {
         count++;
       }
     }
   });
 
   return Math.min(100, Math.round((count / target) * 100));
+}
+
+    async function loadMonthData() {
+  const res = await fetch(BASE_URL + "?mode=read");
+  return await res.json();
 }
 
 async function initMonthView() {
@@ -626,7 +625,7 @@ async function initMonthView() {
   setProgress("mrtProgress", percent);
 }    
 
-    
+initMonthView();
     
   </script>
 

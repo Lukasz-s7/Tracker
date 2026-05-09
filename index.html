@@ -189,8 +189,7 @@ html, body {
   color: white;
   line-height: 20px;
 
-  /* gradient czerwony → żółty → zielony */
-  background: linear-gradient(to right, red, yellow, green);
+  border-radius: 10px;
 }
 
 @media (max-width: 768px) {
@@ -552,6 +551,23 @@ document.querySelectorAll('input[type="number"]').forEach(inp => {
   inp.addEventListener("change", saveCurrentDay);
 });
 
+    function getColor(percent) {
+  if (percent <= 20) return "#e74c3c";      // czerwony
+  if (percent <= 40) return "#e67e22";      // pomarańczowy
+  if (percent <= 60) return "#f1c40f";      // żółty
+  if (percent <= 80) return "#2ecc71";      // jasno zielony
+  return "#27ae60";                         // zielony
+}
+
+    function setProgress(id, percent) {
+  const el = document.getElementById(id);
+
+  el.style.width = percent + "%";
+  el.style.backgroundColor = getColor(percent);
+  el.innerText = percent + "%";
+}
+
+    setProgress("mrtProgress", 100);
     
   </script>
 

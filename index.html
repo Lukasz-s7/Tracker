@@ -628,7 +628,7 @@ const habits = [
 
     function updateAllProgress(data, targets) {
   const key = getCurrentMonthKey();
-  const targetRow = targets.find(r => r.month === key);
+  const targetRow = targets.find(r => String(r.month).trim() === key);
 
   if (!targetRow) return;
 

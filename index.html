@@ -161,6 +161,38 @@ html, body {
   text-align: center;
 }
 
+    .progress-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-row span {
+  width: 50px;
+  font-size: 14px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  line-height: 20px;
+
+  /* gradient czerwony → żółty → zielony */
+  background: linear-gradient(to right, red, yellow, green);
+}
+
 @media (max-width: 768px) {
   .container {
     display: flex !important;          /* nadpisuje grid */
@@ -274,11 +306,26 @@ html, body {
 
   </div>
 
+
+  
   <div id="monthView" class="container hidden">
   
   <div class="panel">
-    <div class="panel-title">Miesiąc - Panel 1</div>
+  <div class="panel-title-center">HABITUM</div>
+
+  <div class="section">
+    <div class="section-title">Factum</div>
+
+    <div class="progress-row">
+      <span>MRT</span>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="mrtProgress">100%</div>
+      </div>
+    </div>
+
   </div>
+</div>
 
   <div class="panel">
     <div class="panel-title">Miesiąc - Panel 2</div>

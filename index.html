@@ -568,6 +568,65 @@ document.querySelectorAll('input[type="number"]').forEach(inp => {
 }
 
     setProgress("mrtProgress", 100);
+
+async function loadTargets() {
+  const url = BASE_URL + "?mode=targets";
+
+  const res = await fetch(url);
+  return await res.json();
+}
+
+function getCurrentMonthKey() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+
+  return `${year}-${month}`;
+}
+
+function getMRTTarget(targets) {
+  const key = getCurrentMonthKey();
+
+  const row = targets.find(r => r.month === key);
+
+  return row ? Number(row.MRT) : 0;
+}
+
+function calculateMRTProgress(data, target) {
+  if (!target) return 0;
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  let count = 0;
+
+  data.forEach(row => {
+    if (!row.date) return;
+
+    const d = new Date(row.date);
+
+    if (d.getFullYear() === year && d.getMonth() === month) {
+      if (row.MRT === true || row.MRT === "TRUE") {
+        count++;
+      }
+    }
+  });
+
+  return Math.min(100, Math.round((count / target) * 100));
+}
+
+async function initMonthView() {
+  const data = await loadMonthData();
+  const targets = await loadTargets();
+
+  const target = getMRTTarget(targets);
+  const percent = calculateMRTProgress(data, target);
+
+  setProgress("mrtProgress", percent);
+}    
+
+    
     
   </script>
 

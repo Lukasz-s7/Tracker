@@ -312,17 +312,33 @@ html, body {
   <div class="panel">
   <div class="panel-title-center">HABITUM</div>
 
+  <!-- FACTUM -->
   <div class="section">
     <div class="section-title">Factum</div>
 
-    <div class="progress-row">
-      <span>MRT</span>
+    <div class="progress-row"><span>MRT</span><div class="progress-bar"><div class="progress-fill" id="MRT_progress"></div></div></div>
+    <div class="progress-row"><span>ERT</span><div class="progress-bar"><div class="progress-fill" id="ERT_progress"></div></div></div>
+    <div class="progress-row"><span>TKS</span><div class="progress-bar"><div class="progress-fill" id="TKS_progress"></div></div></div>
+  </div>
 
-      <div class="progress-bar">
-        <div class="progress-fill" id="mrtProgress">100%</div>
-      </div>
-    </div>
+  <!-- PSYCHE -->
+  <div class="section">
+    <div class="section-title">Psyche</div>
 
+    <div class="progress-row"><span>BKS</span><div class="progress-bar"><div class="progress-fill" id="BKS_progress"></div></div></div>
+    <div class="progress-row"><span>DVP</span><div class="progress-bar"><div class="progress-fill" id="DVP_progress"></div></div></div>
+    <div class="progress-row"><span>KDS</span><div class="progress-bar"><div class="progress-fill" id="KDS_progress"></div></div></div>
+    <div class="progress-row"><span>RLT</span><div class="progress-bar"><div class="progress-fill" id="RLT_progress"></div></div></div>
+  </div>
+
+  <!-- SOMA -->
+  <div class="section">
+    <div class="section-title">Soma</div>
+
+    <div class="progress-row"><span>BHB</span><div class="progress-bar"><div class="progress-fill" id="BHB_progress"></div></div></div>
+    <div class="progress-row"><span>WND</span><div class="progress-bar"><div class="progress-fill" id="WND_progress"></div></div></div>
+    <div class="progress-row"><span>CRB</span><div class="progress-bar"><div class="progress-fill" id="CRB_progress"></div></div></div>
+    <div class="progress-row"><span>WKT</span><div class="progress-bar"><div class="progress-fill" id="WKT_progress"></div></div></div>
   </div>
 </div>
 
@@ -348,6 +364,8 @@ html, body {
 </div>
 
   <script>
+
+    
     function getPolishDayName(dayIndex) {
       const days = [
         "NIEDZIELA",
@@ -578,15 +596,13 @@ function getCurrentMonthKey() {
   return `${year}-${month}`;
 }
 
-function getMRTTarget(targets) {
-  const key = getCurrentMonthKey();
+const habits = [
+  "MRT","ERT","TKS",
+  "BKS","DVP","KDS","RLT",
+  "BHB","WND","CRB","WKT"
+];
 
-  const row = targets.find(r => r.month === key);
-
-  return row ? Number(row.MRT) : 0;
-}
-
-function calculateMRTProgress(data, target) {
+    function calculateProgress(data, habit, target) {
   if (!target) return 0;
 
   const now = new Date();
@@ -601,7 +617,7 @@ function calculateMRTProgress(data, target) {
     const d = new Date(row.date);
 
     if (d.getFullYear() === year && d.getMonth() === month) {
-      if (String(row.MRT).toLowerCase() === "true") {
+      if (String(row[habit]).toLowerCase() === "true") {
         count++;
       }
     }
@@ -610,22 +626,34 @@ function calculateMRTProgress(data, target) {
   return Math.min(100, Math.round((count / target) * 100));
 }
 
+    function updateAllProgress(data, targets) {
+  const key = getCurrentMonthKey();
+  const targetRow = targets.find(r => r.month === key);
+
+  if (!targetRow) return;
+
+  habits.forEach(habit => {
+    const target = Number(targetRow[habit] || 0);
+    const percent = calculateProgress(data, habit, target);
+
+    setProgress(habit + "_progress", percent);
+  });
+}
+    
+
     async function loadMonthData() {
   const res = await fetch(BASE_URL + "?mode=read");
   return await res.json();
 }
 
+ 
+
 async function initMonthView() {
   const data = await loadMonthData();
   const targets = await loadTargets();
 
-  const target = getMRTTarget(targets);
-  const percent = calculateMRTProgress(data, target);
-
-  setProgress("mrtProgress", percent);
-}    
-
-initMonthView();
+  updateAllProgress(data, targets);
+}
     
   </script>
 

@@ -228,7 +228,7 @@ html, body {
 <body>
 
   <!-- TOP BAR -->
-  <div class="topbar" "topbar"></div>
+  <div class="topbar" id="topbar"></div>
 
   <!-- PANELS -->
   <div id="dayView" class="container">
@@ -579,6 +579,8 @@ document.querySelectorAll('input[type="number"]').forEach(inp => {
   el.innerText = percent + "%";
 }
 
+    setProgress("mrtProgress", 100);
+
 const BASE_URL = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
 
 async function loadTargets() {
@@ -652,9 +654,6 @@ async function initMonthView() {
 
   updateAllProgress(data, targets);
 }
-
-
-
     
   </script>
 

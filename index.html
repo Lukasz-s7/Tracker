@@ -683,6 +683,8 @@ const habits = [
    const count = countHabit(data, habit);
 const percent = calculateProgress(data, habit, target);
 
+     console.log("COUNT:", habit, count, target);
+
 setProgress(habit + "_progress", percent);
 
 // 🔥 NOWE:
@@ -726,7 +728,6 @@ async function initMonthView() {
   });
 }
 
-console.log("COUNT:", habit, count, target);
 
 setTimeout(initMonthView, 50);
 

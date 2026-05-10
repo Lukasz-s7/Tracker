@@ -653,18 +653,7 @@ async function initMonthView() {
   updateAllProgress(data, targets);
 }
 
-function setProgress(id, percent) {
-  const el = document.getElementById(id);
 
-  if (!el) {
-    console.log("BRAK ELEMENTU:", id);
-    return;
-  }
-
-  el.style.width = percent + "%";
-  el.style.backgroundColor = getColor(percent);
-  el.innerText = percent + "%";
-}
 
     
   </script>

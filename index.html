@@ -836,8 +836,6 @@ function renderCalendar(events) {
     const title = e["Tytuł"] || "";
     const label = formatEventTime(startRaw, endRaw);
 
-    let label = "";
-
     if (startRaw.includes(" ")) {
       const startTime = startRaw.split(" ")[1]?.slice(0,5) || "";
       const endTime = endRaw.split(" ")[1]?.slice(0,5) || "";

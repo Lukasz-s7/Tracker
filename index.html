@@ -209,8 +209,7 @@ html, body {
 }
 
 .exec-box {
-  flex: 1;
-  background-color: #fafafa;
+  background-color: #e9ecef; /* 🔥 lekko ciemniejsze */
   border-radius: 10px;
   padding: 10px;
   overflow-y: auto;
@@ -781,15 +780,21 @@ async function initMonthView() {
 }
 
 function filterTodayEvents(events) {
-  const today = getToday();
+  const today = new Date().toISOString().slice(0, 10);
 
   return events.filter(e => {
-    const start = e["Data rozpoczęcia"];
-    const end = e["Data zakończenia"];
+    const start = String(e["Data rozpoczęcia"]).slice(0, 10);
+    const end = String(e["Data zakończenia"]).slice(0, 10);
 
     return start <= today && end >= today;
   });
 }
+
+    events.sort((a, b) => {
+  const aStart = new Date(a["Data rozpoczęcia"]);
+  const bStart = new Date(b["Data rozpoczęcia"]);
+  return aStart - bStart;
+});
 
 function renderCalendar(events) {
   const box = document.getElementById("calendarBox");

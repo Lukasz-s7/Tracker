@@ -765,6 +765,77 @@ async function initMonthView() {
   });
 }
 
+    async function loadCalendar() {
+  const url = BASE_URL + "?mode=calendar";
+  const res = await fetch(url);
+  return await res.json();
+}
+
+    function getToday() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function filterTodayEvents(events) {
+  const today = getToday();
+
+  return events.filter(e => {
+    const start = e["Data rozpoczęcia"];
+    const end = e["Data zakończenia"];
+
+    return start <= today && end >= today;
+  });
+}
+
+function renderCalendar(events) {
+  const box = document.getElementById("calendarBox");
+  if (!box) return;
+
+  box.innerHTML = "";
+
+  if (events.length === 0) {
+    box.innerHTML = "<div class='calendar-item'>Brak wydarzeń</div>";
+    return;
+  }
+
+  events.forEach(e => {
+    const el = document.createElement("div");
+    el.className = "calendar-item";
+
+    const startRaw = e["Data rozpoczęcia"];
+    const endRaw = e["Data zakończenia"];
+    const title = e["Tytuł"];
+
+    let label = "";
+
+    // 🔥 EVENT Z GODZINĄ
+    if (startRaw.includes(" ")) {
+      const startTime = startRaw.split(" ")[1].slice(0,5); // HH:MM
+      const endTime = endRaw.split(" ")[1].slice(0,5);
+
+      label = `${startTime}–${endTime}`;
+    } 
+    // 🔥 CAŁODNIOWY
+    else {
+      label = startRaw;
+    }
+
+    el.innerHTML = `
+      <span class="calendar-time">${label}</span>
+      ${title}
+    `;
+
+    box.appendChild(el);
+  });
+}
+
+    async function initCalendar() {
+  const data = await loadCalendar();
+  const todayEvents = filterTodayEvents(data);
+
+  renderCalendar(todayEvents);
+}
+
+    initCalendar();
 
 setTimeout(initMonthView, 50);
 

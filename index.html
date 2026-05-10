@@ -204,13 +204,13 @@ html, body {
 .exec-container {
   display: flex;
   flex-direction: column;
+  flex: 1;              /* 🔥 KLUCZ */
   gap: 10px;
-  min-height: 200px; /* 🔥 gwarancja widoczności */
 }
 
 .exec-box {
-  flex: 1;
-  min-height: 80px; /* 🔥 zabezpieczenie */
+  flex: 1;              /* 🔥 dzieli przestrzeń na pół */
+  min-height: 0;        /* 🔥 zapobiega overflow bugom */
   background-color: #e9ecef;
   border-radius: 10px;
   padding: 10px;
@@ -792,6 +792,29 @@ function filterTodayEvents(events) {
   });
 }
 
+    function formatEventTime(startRaw, endRaw) {
+  const start = new Date(startRaw);
+  const end = new Date(endRaw);
+
+  // 🔥 DETEKCJA "CAŁY DZIEŃ"
+  const isAllDay =
+    start.getUTCHours() === 0 &&
+    end.getUTCHours() === 0 &&
+    (end - start) >= 24 * 60 * 60 * 1000;
+
+  if (isAllDay) {
+    return "cały dzień";
+  }
+
+  // 🔥 FORMAT GODZIN (PL, lokalny czas)
+  const format = d =>
+    d.toLocaleTimeString("pl-PL", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+  return `${format(start)} - ${format(end)}`;
+}
     
 function renderCalendar(events) {
   const box = document.getElementById("calendarBox");
@@ -811,6 +834,7 @@ function renderCalendar(events) {
     const startRaw = String(e["Data rozpoczęcia"] || "");
     const endRaw = String(e["Data zakończenia"] || "");
     const title = e["Tytuł"] || "";
+    const label = formatEventTime(startRaw, endRaw);
 
     let label = "";
 
@@ -824,10 +848,10 @@ function renderCalendar(events) {
     }
 
     el.innerHTML = `
-      <span class="calendar-time">${label}</span>
-      ${title}
-    `;
-
+  <span class="calendar-time">${label}</span>
+  ${title}
+`;
+    
     box.appendChild(el);
   });
 }

@@ -836,7 +836,7 @@ function renderCalendar(events) {
   const data = await loadCalendar();
   const todayEvents = filterTodayEvents(data);
 
-      events.sort((a, b) => {
+      todayEvents.sort((a, b) => {
   const aStart = new Date(a["Data rozpoczęcia"]);
   const bStart = new Date(b["Data rozpoczęcia"]);
   return aStart - bStart;

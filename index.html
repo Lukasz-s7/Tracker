@@ -656,7 +656,25 @@ async function initMonthView() {
   const data = await loadMonthData();
   const targets = await loadTargets();
 
-  updateAllProgress(data, targets);
+  console.log("DATA:", data);
+  console.log("TARGETS:", targets);
+
+  const key = getCurrentMonthKey();
+  console.log("MONTH KEY:", key);
+
+  const targetRow = targets.find(r => String(r.month).trim() === key);
+  console.log("TARGET ROW:", targetRow);
+
+  if (!targetRow) return;
+
+  habits.forEach(habit => {
+    const target = Number(targetRow[habit] || 0);
+    const percent = calculateProgress(data, habit, target);
+
+    console.log(habit, "target:", target, "percent:", percent);
+
+    setProgress(habit + "_progress", percent);
+  });
 }
     
   </script>

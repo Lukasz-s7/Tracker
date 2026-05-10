@@ -194,6 +194,7 @@ html, body {
 }
 
     .progress-count {
+  color: #333;
   width: 50px;
   text-align: right;
   font-size: 12px;
@@ -452,7 +453,7 @@ monthBtn.addEventListener("click", () => {
   monthBtn.classList.add("active");
   dayBtn.classList.remove("active");
 
-   initMonthView();
+ setTimeout(initMonthView, 50);
   
 });
 
@@ -687,7 +688,7 @@ setProgress(habit + "_progress", percent);
 // 🔥 NOWE:
 const countEl = document.getElementById(habit + "_count");
 if (countEl) {
-  countEl.innerText = `${count}/${target}`;
+  countEl.innerText = `${count || 0}/${target || 0}`;
 }
   });
 }

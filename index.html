@@ -205,11 +205,13 @@ html, body {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 100%;
+  min-height: 200px; /* 🔥 gwarancja widoczności */
 }
 
 .exec-box {
-  background-color: #e9ecef; /* 🔥 lekko ciemniejsze */
+  flex: 1;
+  min-height: 80px; /* 🔥 zabezpieczenie */
+  background-color: #e9ecef;
   border-radius: 10px;
   padding: 10px;
   overflow-y: auto;
@@ -802,7 +804,7 @@ function renderCalendar(events) {
 
   box.innerHTML = "";
 
-  if (events.length === 0) {
+  if (!events || events.length === 0) {
     box.innerHTML = "<div class='calendar-item'>Brak wydarzeń</div>";
     return;
   }
@@ -811,21 +813,18 @@ function renderCalendar(events) {
     const el = document.createElement("div");
     el.className = "calendar-item";
 
-    const startRaw = e["Data rozpoczęcia"];
-    const endRaw = e["Data zakończenia"];
-    const title = e["Tytuł"];
+    const startRaw = String(e["Data rozpoczęcia"] || "");
+    const endRaw = String(e["Data zakończenia"] || "");
+    const title = e["Tytuł"] || "";
 
     let label = "";
 
-    // 🔥 EVENT Z GODZINĄ
     if (startRaw.includes(" ")) {
-      const startTime = startRaw.split(" ")[1].slice(0,5); // HH:MM
-      const endTime = endRaw.split(" ")[1].slice(0,5);
+      const startTime = startRaw.split(" ")[1]?.slice(0,5) || "";
+      const endTime = endRaw.split(" ")[1]?.slice(0,5) || "";
 
-      label = `${startTime}–${endTime}`;
-    } 
-    // 🔥 CAŁODNIOWY
-    else {
+      label = `${startTime}${endTime ? "–" + endTime : ""}`;
+    } else {
       label = startRaw;
     }
 

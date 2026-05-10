@@ -792,12 +792,7 @@ function filterTodayEvents(events) {
   });
 }
 
-    events.sort((a, b) => {
-  const aStart = new Date(a["Data rozpoczęcia"]);
-  const bStart = new Date(b["Data rozpoczęcia"]);
-  return aStart - bStart;
-});
-
+    
 function renderCalendar(events) {
   const box = document.getElementById("calendarBox");
   if (!box) return;
@@ -840,6 +835,12 @@ function renderCalendar(events) {
     async function initCalendar() {
   const data = await loadCalendar();
   const todayEvents = filterTodayEvents(data);
+
+      events.sort((a, b) => {
+  const aStart = new Date(a["Data rozpoczęcia"]);
+  const bStart = new Date(b["Data rozpoczęcia"]);
+  return aStart - bStart;
+});
 
   renderCalendar(todayEvents);
 }

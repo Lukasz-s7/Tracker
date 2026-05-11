@@ -548,6 +548,10 @@ html, body {
 
   <script>
 
+    const resolutioFields = [
+  "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
+  "Ksiazki","Filmy","Teatr","Gry","Muzyka","Koncerty"
+];
     
     function getPolishDayName(dayIndex) {
       const days = [
@@ -878,17 +882,31 @@ async function initMonthView() {
 
   if (!targetRow) return;
 
+  // ===== HABITUM (już masz) =====
   habits.forEach(habit => {
     const target = Number(targetRow[habit] || 0);
-    const count = countHabit(data, habit);            // 🔥 NOWE
+    const count = countHabit(data, habit);
     const percent = calculateProgress(data, habit, target);
 
     setProgress(habit + "_progress", percent);
 
-    // 🔥 DODANE LICZBY
     const countEl = document.getElementById(habit + "_count");
     if (countEl) {
       countEl.innerText = `${count}/${target}`;
+    }
+  });
+
+  // ===== RESOLUTIO 🔥 =====
+  resolutioFields.forEach(field => {
+    const target = Number(targetRow[field] || 0);
+    const sum = sumField(data, field);
+    const percent = calculateSumProgress(sum, target);
+
+    setProgress(field + "_progress", percent);
+
+    const countEl = document.getElementById(field + "_count");
+    if (countEl) {
+      countEl.innerText = `${sum}/${target}`;
     }
   });
 }
@@ -980,6 +998,31 @@ function isNow(startRaw, endRaw) {
   const end = new Date(endRaw);
 
   return now >= start && now <= end;
+}
+
+function sumField(data, field) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  let sum = 0;
+
+  data.forEach(row => {
+    if (!row.date) return;
+
+    const d = new Date(row.date);
+
+    if (d.getFullYear() === year && d.getMonth() === month) {
+      sum += Number(row[field] || 0);
+    }
+  });
+
+  return sum;
+}
+
+    function calculateSumProgress(sum, target) {
+  if (!target) return 0;
+  return Math.min(100, Math.round((sum / target) * 100));
 }
     
     async function initCalendar() {

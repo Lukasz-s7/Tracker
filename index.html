@@ -834,16 +834,17 @@ function renderCalendar(events) {
     const startRaw = String(e["Data rozpoczęcia"] || "");
     const endRaw = String(e["Data zakończenia"] || "");
     const title = e["Tytuł"] || "";
+    
     const label = formatEventTime(startRaw, endRaw);
 
     if (startRaw.includes(" ")) {
       const startTime = startRaw.split(" ")[1]?.slice(0,5) || "";
       const endTime = endRaw.split(" ")[1]?.slice(0,5) || "";
 
-      label = `${startTime}${endTime ? "–" + endTime : ""}`;
-    } else {
-      label = startRaw;
-    }
+//      label = `${startTime}${endTime ? "–" + endTime : ""}`;
+//    } else {
+//      label = startRaw;
+//    }
 
     el.innerHTML = `
   <span class="calendar-time">${label}</span>

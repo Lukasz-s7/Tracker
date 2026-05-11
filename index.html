@@ -549,8 +549,21 @@ html, body {
   <script>
 
     const resolutioFields = [
-  "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
-  "Ksiazki","Filmy","Teatr","Gry","Muzyka","Koncerty"
+  { key: "BGS", sheet: "BGS" },
+  { key: "BTS", sheet: "BTS" },
+  { key: "ICS", sheet: "ICS" },
+  { key: "RNN", sheet: "RNN" },
+  { key: "BCG", sheet: "BCG" },
+  { key: "PGN", sheet: "PGN" },
+  { key: "SPI", sheet: "SPI" },
+
+  // 🔥 CULTURA
+  { key: "KSIAZKI", sheet: "Ksiazki" },
+  { key: "FILMY", sheet: "Filmy" },
+  { key: "TEATR", sheet: "Teatr" },
+  { key: "GRY", sheet: "Gry" },
+  { key: "MUZYKA", sheet: "Muzyka" },
+  { key: "KONCERTY", sheet: "Koncerty" }
 ];
     
     function getPolishDayName(dayIndex) {
@@ -897,18 +910,18 @@ async function initMonthView() {
   });
 
   // ===== RESOLUTIO 🔥 =====
-  resolutioFields.forEach(field => {
-    const target = Number(targetRow[field] || 0);
-    const sum = sumField(data, field);
-    const percent = calculateSumProgress(sum, target);
+  resolutioFields.forEach(item => {
+  const target = Number(targetRow[item.sheet] || 0);
+  const sum = sumField(data, item.sheet);
+  const percent = calculateSumProgress(sum, target);
 
-    setProgress(field + "_progress", percent);
+  setProgress(item.key + "_progress", percent);
 
-    const countEl = document.getElementById(field + "_count");
-    if (countEl) {
-      countEl.innerText = `${sum}/${target}`;
-    }
-  });
+  const countEl = document.getElementById(item.key + "_count");
+  if (countEl) {
+    countEl.innerText = `${sum}/${target}`;
+  }
+});
 }
 
     async function loadCalendar() {

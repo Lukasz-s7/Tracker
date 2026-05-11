@@ -233,6 +233,12 @@ html, body {
   margin-right: 6px;
 }    
 
+    .calendar-now {
+  background-color: #d4edda;
+  border-left: 4px solid #27ae60;
+  font-weight: bold;
+}
+
 @media (max-width: 768px) {
   .container {
     display: flex !important;          /* nadpisuje grid */
@@ -796,17 +802,18 @@ function filterTodayEvents(events) {
   const start = new Date(startRaw);
   const end = new Date(endRaw);
 
-  // 🔥 DETEKCJA "CAŁY DZIEŃ"
+  const duration = end - start;
+
+  // 🔥 FIX: wykrycie eventu całodniowego
   const isAllDay =
-    start.getUTCHours() === 0 &&
-    end.getUTCHours() === 0 &&
-    (end - start) >= 24 * 60 * 60 * 1000;
+    start.getHours() === 0 &&
+    end.getHours() === 0 &&
+    duration >= 23 * 60 * 60 * 1000; // tolerancja
 
   if (isAllDay) {
     return "cały dzień";
   }
 
-  // 🔥 FORMAT GODZIN (PL, lokalny czas)
   const format = d =>
     d.toLocaleTimeString("pl-PL", {
       hour: "2-digit",
@@ -838,6 +845,10 @@ function renderCalendar(events) {
     // 🔥 jedyne źródło prawdy
     const label = formatEventTime(startRaw, endRaw);
 
+    if (isNow(startRaw, endRaw)) {
+  el.classList.add("calendar-now");
+}
+
     el.innerHTML = `
       <span class="calendar-time">${label}</span>
       ${title}
@@ -847,6 +858,14 @@ function renderCalendar(events) {
   });
 }
 
+function isNow(startRaw, endRaw) {
+  const now = new Date();
+  const start = new Date(startRaw);
+  const end = new Date(endRaw);
+
+  return now >= start && now <= end;
+}
+    
     async function initCalendar() {
   const data = await loadCalendar();
   const todayEvents = filterTodayEvents(data);

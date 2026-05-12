@@ -539,11 +539,53 @@ html, body {
 
 </div>
 
-  <div class="bottom-nav">
+  <!-- YEAR VIEW -->
+<div id="yearView" class="container hidden">
+
+  <div class="panel">
+    <div class="panel-title-center">ROK - PANEL 1</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title-center">ROK - PANEL 2</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title-center">ROK - PANEL 3</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title-center">ROK - PANEL 4</div>
+  </div>
+
+</div>
+
+<!-- LIFE VIEW -->
+<div id="lifeView" class="container hidden">
+
+  <div class="panel">
+    <div class="panel-title-center">ŻYCIE - PANEL 1</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title-center">ŻYCIE - PANEL 2</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title-center">ŻYCIE - PANEL 3</div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title-center">ŻYCIE - PANEL 4</div>
+  </div>
+
+</div>
+
+ <div class="bottom-nav">
   <button id="dayBtn" class="active">DZIEŃ</button>
   <button id="monthBtn">MIESIĄC</button>
-  <button>ROK</button>
-  <button>ŻYCIE</button>
+  <button id="yearBtn">ROK</button>
+  <button id="lifeBtn">ŻYCIE</button>
 </div>
 
   <script>
@@ -617,33 +659,47 @@ html, body {
 
 const dayBtn = document.getElementById("dayBtn");
 const monthBtn = document.getElementById("monthBtn");
+const yearBtn = document.getElementById("yearBtn");
+const lifeBtn = document.getElementById("lifeBtn");
 
 const dayView = document.getElementById("dayView");
 const monthView = document.getElementById("monthView");
+const yearView = document.getElementById("yearView");
+const lifeView = document.getElementById("lifeView");
 
-dayBtn.addEventListener("click", () => {
-  dayView.classList.remove("hidden");
+function switchView(activeView) {
+  dayView.classList.add("hidden");
   monthView.classList.add("hidden");
+  yearView.classList.add("hidden");
+  lifeView.classList.add("hidden");
 
-  dayBtn.classList.add("active");
+  dayBtn.classList.remove("active");
   monthBtn.classList.remove("active");
+  yearBtn.classList.remove("active");
+  lifeBtn.classList.remove("active");
+
+  activeView.view.classList.remove("hidden");
+  activeView.button.classList.add("active");
+}
+    
+dayBtn.addEventListener("click", () => {
+  switchView({ view: dayView, button: dayBtn });
 });
 
 monthBtn.addEventListener("click", () => {
-  dayView.classList.add("hidden");
-  monthView.classList.remove("hidden");
-
-  monthBtn.classList.add("active");
-  dayBtn.classList.remove("active");
-
- setTimeout(initMonthView, 50);
-  
+  switchView({ view: monthView, button: monthBtn });
+  initMonthView(); // zostaje
 });
 
-dayView.classList.remove("hidden");
-monthView.classList.add("hidden");
+yearBtn.addEventListener("click", () => {
+  switchView({ view: yearView, button: yearBtn });
+});
 
-    
+lifeBtn.addEventListener("click", () => {
+  switchView({ view: lifeView, button: lifeBtn });
+});
+
+   
 
 
     async function loadData() {

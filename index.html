@@ -239,6 +239,10 @@ html, body {
   font-weight: bold;
 }
 
+    .progress-fill.reverse {
+  margin-left: auto;
+}
+
 @media (max-width: 768px) {
   .container {
     display: flex !important;          /* nadpisuje grid */
@@ -865,6 +869,14 @@ document.querySelectorAll('input[type="number"]').forEach(inp => {
   el.innerText = percent + "%";
 }
 
+    function calculateRemainingProgress(sum, target) {
+  if (!target) return 0;
+
+  const remaining = target - sum;
+  const percent = (remaining / target) * 100;
+
+  return Math.max(0, Math.min(100, Math.round(percent)));
+}
 
 const BASE_URL = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
 
@@ -969,15 +981,37 @@ async function initMonthView() {
   resolutioFields.forEach(item => {
   const target = Number(targetRow[item.sheet] || 0);
   const sum = sumField(data, item.sheet);
-  const percent = calculateSumProgress(sum, target);
+
+  let percent;
+
+  // 🔥 SPECJALNY CASE
+  if (item.key === "BGS") {
+    percent = calculateRemainingProgress(sum, target);
+  } else {
+    percent = calculateSumProgress(sum, target);
+  }
 
   setProgress(item.key + "_progress", percent);
 
   const countEl = document.getElementById(item.key + "_count");
   if (countEl) {
-    countEl.innerText = `${sum}/${target}`;
+    if (item.key === "BGS") {
+      const remaining = Math.max(0, target - sum);
+      countEl.innerText = `${remaining}/${target}`; // 👈 zamiast sum/target
+    } else {
+      countEl.innerText = `${sum}/${target}`;
+    }
   }
 });
+  
+}
+
+    const bar = document.getElementById(item.key + "_progress");
+
+if (item.key === "BGS") {
+  bar.classList.add("reverse");
+} else {
+  bar.classList.remove("reverse");
 }
 
     async function loadCalendar() {

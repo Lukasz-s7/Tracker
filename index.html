@@ -1038,15 +1038,29 @@ function toLocalDateString(date) {
 }
 
 function filterTodayEvents(data) {
-  const today = toLocalDateString(new Date());
+  const now = new Date();
+
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
 
   return data.filter(e => {
-    const start = toLocalDateString(e["Data rozpoczęcia"]);
-    const end = toLocalDateString(e["Data zakończenia"]);
+    const start = new Date(e["Data rozpoczęcia"]);
+    const end = new Date(e["Data zakończenia"]);
 
-    return start <= today && end >= today;
+    return (
+      // zaczyna się dziś
+      (start >= today && start < tomorrow)
+
+      ||
+
+      // trwa teraz (ale nie zakończył się o północy)
+      (start < now && end > now)
+    );
   });
-}  
+}
     function formatEventTime(startRaw, endRaw) {
   const start = new Date(startRaw);
   const end = new Date(endRaw);

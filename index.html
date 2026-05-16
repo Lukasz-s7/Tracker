@@ -344,7 +344,7 @@ html, body {
     /* GRID */
 .metrics-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
@@ -369,6 +369,18 @@ html, body {
 
 .metric:hover {
   transform: scale(1.02);
+}
+
+    .metric.active {
+  background: #2ecc71;
+  border-color: #2ecc71;
+  color: white;
+  box-shadow: 0 4px 10px rgba(46, 204, 113, 0.25);
+}
+
+.metric.active input {
+  background: white;
+  color: black;
 }
 
 /* LABEL */
@@ -1383,7 +1395,10 @@ document.querySelectorAll(".metric input").forEach(inp => {
   });
 });
 
- function colorMetric(input) {
+   renderCalendar(todayEvents);
+}
+
+    function colorMetric(input) {
   const val = Number(input.value || 0);
 
   if (val === 0) {
@@ -1396,22 +1411,34 @@ document.querySelectorAll(".metric input").forEach(inp => {
 }
 
 document.querySelectorAll(".metric input").forEach(inp => {
-  inp.addEventListener("input", () => colorMetric(inp));
-});     
+  inp.addEventListener("input", () => {
+    const val = Number(inp.value || 0);
+    const parent = inp.closest(".metric");
 
-console.log("TODAY:", toLocalDateString(new Date()));
+    if (val > 0) {
+      parent.classList.add("active");
+    } else {
+      parent.classList.remove("active");
+    }
+  });
+});  
 
-data.forEach(e => {
-  console.log(
-    "EVENT:",
-    toLocalDateString(e["Data rozpoczęcia"]),
-    toLocalDateString(e["Data zakończenia"])
-  );
-});
 
-  renderCalendar(todayEvents);
+    function initMetricsState() {
+  document.querySelectorAll(".metric input").forEach(inp => {
+    const val = Number(inp.value || 0);
+    const parent = inp.closest(".metric");
+
+    if (val > 0) {
+      parent.classList.add("active");
+    } else {
+      parent.classList.remove("active");
+    }
+  });
 }
 
+initMetricsState();
+    
     initCalendar();
 
 setTimeout(initMonthView, 50);

@@ -926,6 +926,9 @@ document.querySelectorAll(".habit").forEach(el => {
   });
 });
 
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+  cb.addEventListener("change", saveCurrentDay);
+});
 
 
     // ===== RESET DNIA O PÓŁNOCY =====

@@ -1015,8 +1015,7 @@ if (item.key === "BGS") {
 }
 
     async function loadCalendar() {
-  const url = BASE_URL + "?mode=calendar";
-  const res = await fetch(url);
+  const res = await fetch(BASE_URL + "?mode=calendar");
   return await res.json();
 }
 
@@ -1025,19 +1024,18 @@ if (item.key === "BGS") {
 }
 
 function filterTodayEvents(data) {
-  const today = getToday();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
 
   return data.filter(e => {
     const start = new Date(e["Data rozpoczęcia"]);
-    const end = new Date(e["Data zakończenia"]);
-
-    const startDate = start.toISOString().slice(0, 10);
-    const endDate = end.toISOString().slice(0, 10);
-
-    return startDate <= today && endDate >= today;
+    return start >= today && start < tomorrow;
   });
 }
-
+    
     function formatEventTime(startRaw, endRaw) {
   const start = new Date(startRaw);
   const end = new Date(endRaw);
@@ -1131,10 +1129,7 @@ function sumField(data, field) {
   return Math.min(100, Math.round((sum / target) * 100));
 }
 
-async function loadCalendarData() {
-  const res = await fetch(BASE_URL + "?mode=calendar");
-  return await res.json();
-}
+
     
     async function initCalendar() {
   const data = await loadCalendar();

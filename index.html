@@ -592,7 +592,15 @@ html, body {
   <button id="lifeBtn">ŻYCIE</button>
 </div>
 
+
+
+
+  
   <script>
+
+    window.onerror = function (msg, url, line, col, error) {
+  console.log("JS ERROR:", msg, "line:", line);
+};
 
     const resolutioFields = [
   { key: "BGS", sheet: "BGS" },

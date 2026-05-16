@@ -1024,14 +1024,17 @@ if (item.key === "BGS") {
   return new Date().toISOString().slice(0, 10);
 }
 
-function filterTodayEvents(events) {
-  const today = new Date().toISOString().slice(0, 10);
+function filterTodayEvents(data) {
+  const today = getToday();
 
-  return events.filter(e => {
-    const start = String(e["Data rozpoczęcia"]).slice(0, 10);
-    const end = String(e["Data zakończenia"]).slice(0, 10);
+  return data.filter(e => {
+    const start = new Date(e["Data rozpoczęcia"]);
+    const end = new Date(e["Data zakończenia"]);
 
-    return start <= today && end >= today;
+    const startDate = start.toISOString().slice(0, 10);
+    const endDate = end.toISOString().slice(0, 10);
+
+    return startDate <= today && endDate >= today;
   });
 }
 
@@ -1127,6 +1130,11 @@ function sumField(data, field) {
   if (!target) return 0;
   return Math.min(100, Math.round((sum / target) * 100));
 }
+
+async function loadCalendarData() {
+  const res = await fetch(BASE_URL + "?mode=calendar");
+  return await res.json();
+}
     
     async function initCalendar() {
   const data = await loadCalendar();
@@ -1137,6 +1145,8 @@ function sumField(data, field) {
   const bStart = new Date(b["Data rozpoczęcia"]);
   return aStart - bStart;
 });
+
+      
 
 console.log("CALENDAR RAW:", data);
 console.log("TODAY EVENTS:", todayEvents);

@@ -341,6 +341,66 @@ html, body {
   }
 }
 
+    /* GRID */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metrics-grid.small {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* KAFEL */
+.metric {
+  background: #f4f6f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+
+  padding: 12px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  transition: all 0.15s ease;
+}
+
+.metric:hover {
+  transform: scale(1.02);
+}
+
+/* LABEL */
+.metric-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #7f8c8d;
+  letter-spacing: 0.5px;
+}
+
+/* INPUT */
+.metric input {
+  width: 100%;
+  height: 36px;
+
+  border-radius: 8px;
+  border: 1px solid #ccc;
+
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+
+  background: white;
+}
+
+/* focus = bardziej app feeling */
+.metric input:focus {
+  outline: none;
+  border-color: #2c3e50;
+  box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
+}
+
 @media (max-width: 768px) {
   .container {
     display: flex !important;          /* nadpisuje grid */
@@ -373,6 +433,9 @@ html, body {
   </style>
 </head>
 
+
+
+  
 
 <body>
 
@@ -446,30 +509,38 @@ html, body {
 <div class="panel">
   <div class="panel-title-center">RESOLUTIO</div>
 
-  <!-- LISTA 1 -->
+  <!-- METRYKI -->
   <div class="section">
-    <div class="list-row"><span>BGS</span><input type="number" id="BGS"></div>
-    <div class="list-row"><span>BTS</span><input type="number" id="BTS"></div>
-    <div class="list-row"><span>ICS</span><input type="number" id="ICS"></div>
-    <div class="list-row"><span>RNN</span><input type="number" id="RNN"></div>
-    <div class="list-row"><span>BCG</span><input type="number" id="BCG"></div>
-    <div class="list-row"><span>PGN</span><input type="number" id="PGN"></div>
-    <div class="list-row"><span>SPI</span><input type="number" id="SPI"></div>
-  </div>
+    <div class="section-title">Provocatio</div>
+  <div class="metrics-grid">
 
-  <div style="margin-top: 16px;"></div>
+    <div class="metric"><div class="metric-label">BGS</div><input type="number" id="BGS"></div>
+    <div class="metric"><div class="metric-label">BTS</div><input type="number" id="BTS"></div>
+    <div class="metric"><div class="metric-label">ICS</div><input type="number" id="ICS"></div>
+    <div class="metric"><div class="metric-label">RNN</div><input type="number" id="RNN"></div>
+    <div class="metric"><div class="metric-label">BCG</div><input type="number" id="BCG"></div>
+    <div class="metric"><div class="metric-label">PGN</div><input type="number" id="PGN"></div>
+    <div class="metric"><div class="metric-label">SPI</div><input type="number" id="SPI"></div>
+
+    </div>
+  </div>
 
   <!-- CULTURA -->
   <div class="section">
     <div class="section-title">Cultura</div>
 
-    <div class="list-row"><span>Książki</span><input type="number" id="KSIAZKI"></div>
-    <div class="list-row"><span>Filmy</span><input type="number" id="FILMY"></div>
-    <div class="list-row"><span>Teatr</span><input type="number" id="TEATR"></div>
-    <div class="list-row"><span>Gry</span><input type="number" id="GRY"></div>
-    <div class="list-row"><span>Muzyka</span><input type="number" id="MUZYKA"></div>
-    <div class="list-row"><span>Koncerty</span><input type="number" id="KONCERTY"></div>
+    <div class="metrics-grid small">
+      
+      <div class="metric"><div class="metric-label">Książki</div><input type="number" id="KSIAZKI"></div>
+      <div class="metric"><div class="metric-label">Filmy</div><input type="number" id="FILMY"></div>
+      <div class="metric"><div class="metric-label">Teatr</div><input type="number" id="TEATR"></div>
+      <div class="metric"><div class="metric-label">Gry</div><input type="number" id="GRY"></div>
+      <div class="metric"><div class="metric-label">Muzyka</div><input type="number" id="MUZYKA"></div>
+      <div class="metric"><div class="metric-label">Koncerty</div><input type="number" id="KONCERTY"></div>
+      
+    </div>
   </div>
+
 </div>
 
     
@@ -1306,7 +1377,27 @@ function sumField(data, field) {
   return aStart - bStart;
 });
 
-      
+document.querySelectorAll(".metric input").forEach(inp => {
+  inp.addEventListener("focus", () => {
+    inp.select();
+  });
+});
+
+ function colorMetric(input) {
+  const val = Number(input.value || 0);
+
+  if (val === 0) {
+    input.style.borderColor = "#ccc";
+  } else if (val < 5) {
+    input.style.borderColor = "#e67e22";
+  } else {
+    input.style.borderColor = "#2ecc71";
+  }
+}
+
+document.querySelectorAll(".metric input").forEach(inp => {
+  inp.addEventListener("input", () => colorMetric(inp));
+});     
 
 console.log("TODAY:", toLocalDateString(new Date()));
 

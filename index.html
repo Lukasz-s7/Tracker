@@ -1023,23 +1023,20 @@ if (item.key === "BGS") {
   return new Date().toISOString().slice(0, 10);
 }
 
-function filterTodayEvents(data) {
-  const today = new Date();
-  today.setHours(0,0,0,0);
+function toLocalDateString(date) {
+  return new Date(date).toLocaleDateString("sv-SE"); // YYYY-MM-DD
+}
 
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1);
+function filterTodayEvents(data) {
+  const today = toLocalDateString(new Date());
 
   return data.filter(e => {
-    const start = new Date(e["Data rozpoczęcia"]);
-    const end = new Date(e["Data zakończenia"]);
+    const start = toLocalDateString(e["Data rozpoczęcia"]);
+    const end = toLocalDateString(e["Data zakończenia"]);
 
-    return (
-      (start >= today && start < tomorrow) ||   // zaczyna się dziś
-      (start < today && end >= today)           // trwa dziś
-    );
+    return start <= today && end >= today;
   });
-}    
+}  
     function formatEventTime(startRaw, endRaw) {
   const start = new Date(startRaw);
   const end = new Date(endRaw);

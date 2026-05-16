@@ -243,6 +243,104 @@ html, body {
   margin-left: auto;
 }
 
+
+    /* PANEL */
+.habitatum-panel {
+  padding: 18px;
+}
+
+/* SEKCJE */
+.habit-section {
+  margin-bottom: 22px;
+}
+
+.habit-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  color: #7f8c8d;
+  margin-bottom: 10px;
+}
+
+/* GRID */
+.habit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* KAFELKI */
+.habit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px;
+  border-radius: 12px;
+
+  background: #f4f6f7;
+  border: 1px solid #e0e0e0;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+/* hover (desktop) */
+.habit:hover {
+  transform: scale(1.02);
+}
+
+/* aktywny */
+.habit.active {
+  background: #2ecc71;
+  color: white;
+  border-color: #2ecc71;
+  box-shadow: 0 4px 10px rgba(46, 204, 113, 0.25);
+}
+
+/* CHECKBOX */
+.habit-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid #bbb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.habit.active .habit-check {
+  background: white;
+  border-color: white;
+}
+
+.habit.active .habit-check::after {
+  content: "✓";
+  font-size: 14px;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+/* TEKST */
+.habit span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* MOBILE – większe tap area */
+@media (max-width: 768px) {
+  .habit {
+    padding: 14px;
+  }
+
+  .habit span {
+    font-size: 15px;
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     display: flex !important;          /* nadpisuje grid */
@@ -284,39 +382,66 @@ html, body {
   <!-- PANELS -->
   <div id="dayView" class="container">
 
-   <div class="panel">
+   <div class="panel habitum-panel">
   <div class="panel-title-center">HABITUM</div>
 
   <!-- FACTUM -->
-  <div class="section">
-    <div class="section-title">Factum</div>
+  <div class="habit-section">
+    <div class="habit-section-title">Factum</div>
 
-    <label><input type="checkbox" id="MRT"> MRT</label>
-    <label><input type="checkbox" id="ERT"> ERT</label>
-    <label><input type="checkbox" id="TKS"> TKS</label>
+    <div class="habit-grid">
+      <div class="habit" data-id="MRT"><div class="habit-check"></div><span>MRT</span></div>
+      <div class="habit" data-id="ERT"><div class="habit-check"></div><span>ERT</span></div>
+      <div class="habit" data-id="TKS"><div class="habit-check"></div><span>TKS</span></div>
+    </div>
   </div>
 
   <!-- PSYCHE -->
-  <div class="section">
-    <div class="section-title">Psyche</div>
+  <div class="habit-section">
+    <div class="habit-section-title">Psyche</div>
 
-    <label><input type="checkbox" id="BKS"> BKS</label>
-    <label><input type="checkbox" id="DVP"> DVP</label>
-    <label><input type="checkbox" id="KDS"> KDS</label>
-    <label><input type="checkbox" id="RLT"> RLT</label>
+    <div class="habit-grid">
+      <div class="habit" data-id="BKS"><div class="habit-check"></div><span>BKS</span></div>
+      <div class="habit" data-id="DVP"><div class="habit-check"></div><span>DVP</span></div>
+      <div class="habit" data-id="KDS"><div class="habit-check"></div><span>KDS</span></div>
+      <div class="habit" data-id="RLT"><div class="habit-check"></div><span>RLT</span></div>
+    </div>
   </div>
 
   <!-- SOMA -->
-  <div class="section">
-    <div class="section-title">Soma</div>
+  <div class="habit-section">
+    <div class="habit-section-title">Soma</div>
 
-    <label><input type="checkbox" id="BHB"> BHB</label>
-    <label><input type="checkbox" id="WND"> WND</label>
-    <label><input type="checkbox" id="CRB"> CRB</label>
-    <label><input type="checkbox" id="WKT"> WKT</label>
+    <div class="habit-grid">
+      <div class="habit" data-id="BHB"><div class="habit-check"></div><span>BHB</span></div>
+      <div class="habit" data-id="WND"><div class="habit-check"></div><span>WND</span></div>
+      <div class="habit" data-id="CRB"><div class="habit-check"></div><span>CRB</span></div>
+      <div class="habit" data-id="WKT"><div class="habit-check"></div><span>WKT</span></div>
+    </div>
   </div>
 </div>
 
+<!-- HIDDEN CHECKBOXES (DATA LAYER) -->
+<div id="habitInputs" style="display:none;">
+
+  <!-- FACTUM -->
+  <input type="checkbox" id="MRT">
+  <input type="checkbox" id="ERT">
+  <input type="checkbox" id="TKS">
+
+  <!-- PSYCHE -->
+  <input type="checkbox" id="BKS">
+  <input type="checkbox" id="DVP">
+  <input type="checkbox" id="KDS">
+  <input type="checkbox" id="RLT">
+
+  <!-- SOMA -->
+  <input type="checkbox" id="BHB">
+  <input type="checkbox" id="WND">
+  <input type="checkbox" id="CRB">
+  <input type="checkbox" id="WKT">
+
+</div>
     
 <div class="panel">
   <div class="panel-title-center">RESOLUTIO</div>
@@ -785,8 +910,20 @@ function saveCurrentDay() {
 }
 
 // 🔥 eventy dla checkboxów
-document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-  cb.addEventListener("change", saveCurrentDay);
+document.querySelectorAll(".habit").forEach(el => {
+  el.addEventListener("click", () => {
+    el.classList.toggle("active");
+
+    const id = el.dataset.id;
+    const checkbox = document.getElementById(id);
+
+    if (checkbox) {
+      checkbox.checked = el.classList.contains("active");
+
+      // 🔥 to uruchamia Twój existing saveCurrentDay
+      checkbox.dispatchEvent(new Event("change"));
+    }
+  });
 });
 
 

@@ -1032,10 +1032,14 @@ function filterTodayEvents(data) {
 
   return data.filter(e => {
     const start = new Date(e["Data rozpoczęcia"]);
-    return start >= today && start < tomorrow;
+    const end = new Date(e["Data zakończenia"]);
+
+    return (
+      (start >= today && start < tomorrow) ||   // zaczyna się dziś
+      (start < today && end >= today)           // trwa dziś
+    );
   });
-}
-    
+}    
     function formatEventTime(startRaw, endRaw) {
   const start = new Date(startRaw);
   const end = new Date(endRaw);

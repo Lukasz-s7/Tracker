@@ -1144,8 +1144,15 @@ function sumField(data, field) {
 
       
 
-console.log("CALENDAR RAW:", data);
-console.log("TODAY EVENTS:", todayEvents);
+console.log("TODAY:", toLocalDateString(new Date()));
+
+data.forEach(e => {
+  console.log(
+    "EVENT:",
+    toLocalDateString(e["Data rozpoczęcia"]),
+    toLocalDateString(e["Data zakończenia"])
+  );
+});
 
   renderCalendar(todayEvents);
 }

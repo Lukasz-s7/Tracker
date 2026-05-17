@@ -406,6 +406,10 @@ html, body {
   background: white;
 }
 
+    .metric:active {
+  transform: scale(0.97);
+}
+
 /* focus = bardziej app feeling */
 .metric input:focus {
   outline: none;
@@ -1351,6 +1355,26 @@ function isNow(startRaw, endRaw) {
 
   return now >= start && now <= end;
 }
+
+    document.querySelectorAll(".metric").forEach(metric => {
+  metric.addEventListener("click", (e) => {
+
+    // 🔥 jeśli kliknięto input → NIE rób +1
+    if (e.target.tagName === "INPUT") return;
+
+    const input = metric.querySelector("input");
+    if (!input) return;
+
+    let val = Number(input.value || 0);
+    val += 1;
+
+    input.value = val;
+
+    // 🔥 trigger Twojego systemu zapisu
+    input.dispatchEvent(new Event("change"));
+    input.dispatchEvent(new Event("input"));
+  });
+});
 
 function sumField(data, field) {
   const now = new Date();

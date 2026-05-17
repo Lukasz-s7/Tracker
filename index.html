@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tracker</title>
 
- 
+
+<script src="https://unpkg.com/lucide@latest"></script>
+  
   <style>
 
 * {
@@ -561,7 +563,45 @@ html, body {
   text-decoration: line-through;
   opacity: 0.7;
 }
-    
+
+.exec-month-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.exec-month-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+
+  border-radius: 12px;
+  background: #f4f6f8;
+  border: 1px solid #dfe6e9;
+
+  transition: all 0.2s ease;
+}
+
+.exec-month-item:hover {
+  background: #eef2f5;
+}
+
+/* ikonki */
+.exec-month-item svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.8;
+  color: #555;
+}
+
+/* tekst */
+.exec-month-item span {
+  font-size: 14px;
+}
+
     
 @media (max-width: 768px) {
   .container {
@@ -742,6 +782,8 @@ html, body {
 
 
   
+
+  
   <div id="monthView" class="container hidden">
   
   <div class="panel">
@@ -900,12 +942,46 @@ html, body {
 </div>
 
   <div class="panel">
-    <div class="panel-title">Miesiąc - Panel 3</div>
+    <div class="panel-title-center">CONSILIA</div>
   </div>
 
   <div class="panel">
-    <div class="panel-title">Miesiąc - Panel 4</div>
+  <div class="panel-title-center">EXECUTIO</div>
+
+  <div class="exec-month-list">
+
+    <div class="exec-month-item">
+      <i data-lucide="book"></i>
+      <span>Książki</span>
+    </div>
+
+    <div class="exec-month-item">
+      <i data-lucide="film"></i>
+      <span>Filmy</span>
+    </div>
+
+    <div class="exec-month-item">
+      <i data-lucide="drama"></i>
+      <span>Spektakle</span>
+    </div>
+
+    <div class="exec-month-item">
+      <i data-lucide="gamepad-2"></i>
+      <span>Gry</span>
+    </div>
+
+    <div class="exec-month-item">
+      <i data-lucide="disc"></i>
+      <span>Albumy</span>
+    </div>
+
+    <div class="exec-month-item">
+      <i data-lucide="mic"></i>
+      <span>Koncerty</span>
+    </div>
+
   </div>
+</div>
 
 </div>
 
@@ -913,19 +989,19 @@ html, body {
 <div id="yearView" class="container hidden">
 
   <div class="panel">
-    <div class="panel-title-center">ROK - PANEL 1</div>
+    <div class="panel-title-center">HABITUM</div>
   </div>
 
   <div class="panel">
-    <div class="panel-title-center">ROK - PANEL 2</div>
+    <div class="panel-title-center">RESOLUTIO</div>
   </div>
 
   <div class="panel">
-    <div class="panel-title-center">ROK - PANEL 3</div>
+    <div class="panel-title-center">CONSILIA</div>
   </div>
 
   <div class="panel">
-    <div class="panel-title-center">ROK - PANEL 4</div>
+    <div class="panel-title-center">EXECUTIO</div>
   </div>
 
 </div>
@@ -1709,7 +1785,7 @@ async function loadTasks() {
   renderTasks(todayTasks);
 }
 
-
+lucide.createIcons();
 
 async function initAll() {
   setLoading();

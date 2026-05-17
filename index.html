@@ -1664,7 +1664,7 @@ async function loadTasks() {
   tasks.forEach(t => {
     const el = document.createElement("div");
 
-    const isDone = t["Status"] === "Zrobione";
+    const isDone = t["Status"] === "Ukończone";
 
     el.className = "task-item" + (isDone ? " done" : "");
 

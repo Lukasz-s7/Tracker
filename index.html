@@ -245,7 +245,7 @@ html, body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 10px;
+  gap: 16px;
 }
 
 .exec-tasks {
@@ -259,27 +259,33 @@ html, body {
 
 .exec-box {
   flex: 1;
-  overflow-y: auto;
-
-  background: #eef2f3;
+  background: #f4f6f8; /* 🔥 jak kafelki */
+  border: 1px solid #dfe6e9;
   border-radius: 12px;
   padding: 10px;
+  min-height: 120px;
 }
 
 .calendar-item {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 13px;
-  padding: 6px;
-  border-bottom: 1px solid #eee;
+  align-items: center;
+  gap: 12px;
+
+  padding: 6px 8px;
+  margin-bottom: 4px;
+
+  border-radius: 8px;
 }
 
+.calendar-title {
+  text-align: left;
+  flex: 1;
+}
+    
 .calendar-time {
-  min-width: 80px;
-  color: #555;
-  font-weight: bold;
-  margin-right: 6px;
+  min-width: 90px;  /* 🔥 stała szerokość */
+  font-weight: 500;
+  color: #2c3e50;
 }    
 
     .calendar-now {
@@ -474,9 +480,12 @@ html, body {
 }
 
 .exec-section-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c7a89; /* taki jak Resolutio */
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 /* lista */
@@ -700,15 +709,16 @@ html, body {
 
   <div class="exec-container">
 
-    <!-- GÓRNY PANEL (ZADANIA) -->
-    <div class="exec-tasks">
-  <div class="exec-section-title">Zadania</div>
-  <div id="tasksBox"></div>
-</div>
+    <!-- 🔥 AGENDA -->
+    <div class="exec-section">
+      <div class="exec-section-title">Agenda</div>
+      <div class="exec-box" id="tasksBox"></div>
+    </div>
 
-    <!-- DOLNY PANEL (KALENDARZ) -->
-    <div class="exec-box" id="calendarBox">
-      <!-- tutaj wpadają eventy -->
+    <!-- 🔥 CALENDARIUM -->
+    <div class="exec-section">
+      <div class="exec-section-title">Calendarium</div>
+      <div class="exec-box" id="calendarBox"></div>
     </div>
 
   </div>
@@ -1505,9 +1515,9 @@ function renderCalendar(events) {
 }
 
     el.innerHTML = `
-      <span class="calendar-time">${label}</span>
-      ${title}
-    `;
+  <span class="calendar-time">${label}</span>
+  <span class="calendar-title">${title}</span>
+`;
 
     box.appendChild(el);
   });

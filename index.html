@@ -26,11 +26,11 @@ html, body {
 
     /* TOPBAR */
     .topbar {
-     background-color: #2c3e50;
-    color: white;
+  background-color: #2c3e50;
+  color: white;
 
-    padding: 15px;
-    font-size: 22px;
+  padding: 15px;
+  font-size: 22px;
   font-weight: bold;
   text-transform: uppercase;
 
@@ -40,8 +40,48 @@ html, body {
 
   position: sticky;
   top: 0;
-      white-space: nowrap;
-    }
+}
+
+/* tekst wycentrowany */
+#topbarText {
+  position: absolute;
+}
+
+/* status po prawej */
+.topbar-status {
+  position: absolute;
+  right: 15px;
+
+  width: 24px;
+  height: 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 16px;
+}
+
+/* spinner */
+.spinner {
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+/* tick */
+.status-ok {
+  color: #2ecc71;
+  font-size: 18px;
+}
 
     .date {
       font-weight: bold;
@@ -547,7 +587,10 @@ html, body {
 <body>
 
   <!-- TOP BAR -->
-  <div class="topbar" id="topbar"></div>
+  <div class="topbar" id="topbar">
+  <div id="topbarText"></div>
+  <div id="topbarStatus" class="topbar-status"></div>
+</div>
 
   <!-- PANELS -->
   <div id="dayView" class="container">
@@ -907,6 +950,21 @@ html, body {
     window.onerror = function (msg, url, line, col, error) {
   console.log("JS ERROR:", msg, "line:", line);
 };
+
+
+    function setLoading() {
+  const el = document.getElementById("topbarStatus");
+  if (!el) return;
+
+  el.innerHTML = '<div class="spinner"></div>';
+}
+
+function setLoaded() {
+  const el = document.getElementById("topbarStatus");
+  if (!el) return;
+
+  el.innerHTML = '<span class="status-ok">✔</span>';
+}
 
     const resolutioFields = [
   { key: "BGS", sheet: "BGS" },
@@ -1559,7 +1617,7 @@ document.querySelectorAll(".metric input").forEach(inp => {
     
 initMetricsState();
     
-    initCalendar();
+   
 
 setTimeout(initMonthView, 50);
 
@@ -1621,7 +1679,22 @@ async function loadTasks() {
   renderTasks(todayTasks);
 }
 
-initTasks();
+
+
+async function initAll() {
+  setLoading();
+
+  await Promise.all([
+    init(),
+    initCalendar(),
+    initTasks()
+  ]);
+
+  setLoaded();
+}
+
+initAll();
+    
     
     
   </script>

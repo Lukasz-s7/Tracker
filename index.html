@@ -479,6 +479,12 @@ html, body {
   box-shadow: 0 0 0 2px rgba(44, 62, 80, 0.1);
 }
 
+.exec-section {
+  flex: 1; /* 🔥 dzieli równo */
+  display: flex;
+  flex-direction: column;
+}
+    
 .exec-section-title {
   font-size: 13px;
   font-weight: 600;
@@ -711,13 +717,13 @@ html, body {
 
     <!-- 🔥 AGENDA -->
     <div class="exec-section">
-      <div class="exec-section-title">Agenda</div>
+      <div class="section-title">Agenda</div>
       <div class="exec-box" id="tasksBox"></div>
     </div>
 
     <!-- 🔥 CALENDARIUM -->
     <div class="exec-section">
-      <div class="exec-section-title">Calendarium</div>
+      <div class="section-title">Calendarium</div>
       <div class="exec-box" id="calendarBox"></div>
     </div>
 

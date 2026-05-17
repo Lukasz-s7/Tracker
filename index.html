@@ -966,6 +966,8 @@ function setLoaded() {
   el.innerHTML = '<span class="status-ok">✔</span>';
 }
 
+    setLoading();
+
     const resolutioFields = [
   { key: "BGS", sheet: "BGS" },
   { key: "BTS", sheet: "BTS" },
@@ -1019,7 +1021,7 @@ function setLoaded() {
   const hours = String(now.getHours()).padStart(2, "0");
   const minutes = String(now.getMinutes()).padStart(2, "0");
 
-  document.getElementById("topbar").innerText =
+  document.getElementById("topbarText").innerText =
     `${dayName} | ${day}.${month}.${year} | ${hours}:${minutes}`;
 }
 
@@ -1684,13 +1686,17 @@ async function loadTasks() {
 async function initAll() {
   setLoading();
 
-  await Promise.all([
-    init(),
-    initCalendar(),
-    initTasks()
-  ]);
+  try {
+    await Promise.all([
+      init().catch(e => console.error("INIT ERROR:", e)),
+      initCalendar().catch(e => console.error("CALENDAR ERROR:", e)),
+      initTasks().catch(e => console.error("TASKS ERROR:", e))
+    ]);
+  } catch (e) {
+    console.error("GLOBAL ERROR:", e);
+  }
 
-  setLoaded();
+  setLoaded(); // 🔥 ZAWSZE się wykona
 }
 
 initAll();

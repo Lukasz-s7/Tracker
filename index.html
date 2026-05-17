@@ -204,17 +204,26 @@ html, body {
 .exec-container {
   display: flex;
   flex-direction: column;
-  flex: 1;              /* 🔥 KLUCZ */
+  height: 100%;
   gap: 10px;
 }
 
-.exec-box {
-  flex: 1;              /* 🔥 dzieli przestrzeń na pół */
-  min-height: 0;        /* 🔥 zapobiega overflow bugom */
-  background-color: #e9ecef;
-  border-radius: 10px;
-  padding: 10px;
+.exec-tasks {
+  flex: 1;
   overflow-y: auto;
+
+  background: #eef2f3;   /* lekko ciemniejsze – jak chciałeś wcześniej */
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.exec-box {
+  flex: 1;
+  overflow-y: auto;
+
+  background: #eef2f3;
+  border-radius: 12px;
+  padding: 10px;
 }
 
 .calendar-item {

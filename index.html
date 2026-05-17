@@ -1419,6 +1419,16 @@ function toLocalDateString(date) {
   return new Date(date).toLocaleDateString("sv-SE"); // YYYY-MM-DD
 }
 
+    function getTodayLocal() {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+    
+
 function filterTodayEvents(data) {
   const now = new Date();
 
@@ -1632,10 +1642,11 @@ async function loadTasks() {
 }
 
     function filterTodayTasks(data) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = getTodayLocal();
 
   return data.filter(t => {
-    return t["Termin"] === today;
+    const term = String(t["Termin"] || "").slice(0, 10);
+    return term === today;
   });
 }
 

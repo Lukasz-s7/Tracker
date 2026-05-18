@@ -1854,20 +1854,18 @@ lucide.createIcons();
     
 
 async function initAll() {
-  setLoading();
-
   try {
     await Promise.all([
-      init().catch(e => console.error("INIT ERROR:", e)),
-      initCalendar().catch(e => console.error("CALENDAR ERROR:", e)),
-      initTasks().catch(e => console.error("TASKS ERROR:", e)),
+      initMonthView(),
+      initCalendar(),
+      initTasks(),
       initDayState()
     ]);
   } catch (e) {
-    console.error("GLOBAL ERROR:", e);
+    console.error("INIT ERROR:", e);
+  } finally {
+    stopLoading(); // 🔥 zawsze się wykona
   }
-
-  setLoaded(); // 🔥 ZAWSZE się wykona
 }
 
 // initAll();

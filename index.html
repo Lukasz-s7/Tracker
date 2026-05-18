@@ -1287,13 +1287,35 @@ async function loadTodayData() {
     if (!el) return;
 
     el.value = row[f] || 0;
+    el.value = val;
+
+const tile = el.closest(".res-tile");
+
+if (tile) {
+  if (val > 0) {
+    tile.classList.add("active");
+  } else {
+    tile.classList.remove("active");
+  }
+}
 
     // 🔥 jeśli masz zielone kafelki
-    if (Number(row[f]) > 0) {
-      el.closest(".res-tile")?.classList.add("active");
-    }
+//    if (Number(row[f]) > 0) {
+//      el.closest(".res-tile")?.classList.add("active");
+//    }
   });
 }
+
+const wrapper = el.closest(".habit-tile");
+
+if (wrapper) {
+  if (el.checked) {
+    wrapper.classList.add("active");
+  } else {
+    wrapper.classList.remove("active");
+  }
+}
+
     
 
     // ===== RESET DNIA O PÓŁNOCY =====

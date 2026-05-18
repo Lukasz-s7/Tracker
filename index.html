@@ -1248,11 +1248,15 @@ async function loadTodayData() {
   const res = await fetch(BASE_URL + "?mode=read");
   const data = await res.json();
 
-  const today = getTodayLocal(); // 🔥 lokalna data!
+  if (!Array.isArray(data)) {
+    console.error("DATA NIE JEST TABLICĄ:", data);
+    return null;
+  }
+
+  const today = getTodayLocal();
 
   return data.find(row => {
-    const d = normalizeDate(row.date);
-    return d === today;
+    return normalizeDate(row.date) === today;
   });
 }
 
@@ -1297,23 +1301,19 @@ if (wrapper) {
     const el = document.getElementById(f);
     if (!el) return;
 
-    el.value = row[f] || 0;
+    const val = Number(row[f]) || 0; // 🔥 DEFINICJA
+
     el.value = val;
 
-const tile = el.closest(".res-tile");
+    const tile = el.closest(".res-tile");
 
-if (tile) {
-  if (val > 0) {
-    tile.classList.add("active");
-  } else {
-    tile.classList.remove("active");
-  }
-}
-
-    // 🔥 jeśli masz zielone kafelki
-//    if (Number(row[f]) > 0) {
-//      el.closest(".res-tile")?.classList.add("active");
-//    }
+    if (tile) {
+      if (val > 0) {
+        tile.classList.add("active");
+      } else {
+        tile.classList.remove("active");
+      }
+    }
   });
 }
 

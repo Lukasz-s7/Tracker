@@ -1271,21 +1271,22 @@ async function loadTodayData() {
   if (!row) return;
 
   habits.forEach(habit => {
-    const el = document.getElementById(habit);
-    if (!el) return;
+    const input = document.getElementById(habit);
+    const tile = document.querySelector(`.habit[data-id="${habit}"]`);
 
-    el.checked = row[habit] === true || row[habit] === "TRUE";
+    if (!input || !tile) return;
 
-    const wrapper = el.closest(".habit-tile");
+    const isChecked = row[habit] === true || row[habit] === "TRUE";
 
-if (wrapper) {
-  if (el.checked) {
-    wrapper.classList.add("active");
-  } else {
-    wrapper.classList.remove("active");
-  }
-}
+    // DATA
+    input.checked = isChecked;
 
+    // UI
+    if (isChecked) {
+      tile.classList.add("active");
+    } else {
+      tile.classList.remove("active");
+    }
   });
 }
 
@@ -1298,21 +1299,21 @@ if (wrapper) {
   ];
 
   fields.forEach(f => {
-    const el = document.getElementById(f);
-    if (!el) return;
+    const input = document.getElementById(f);
+    if (!input) return;
 
-    const val = Number(row[f]) || 0; // 🔥 DEFINICJA
+    const val = Number(row[f]) || 0;
 
-    el.value = val;
+    input.value = val;
 
-    const tile = el.closest(".res-tile");
+    const tile = input.closest(".metric");
 
-    if (tile) {
-      if (val > 0) {
-        tile.classList.add("active");
-      } else {
-        tile.classList.remove("active");
-      }
+    if (!tile) return;
+
+    if (val > 0) {
+      tile.classList.add("active");
+    } else {
+      tile.classList.remove("active");
     }
   });
 }
@@ -1863,9 +1864,10 @@ async function initAll() {
     ]);
   } catch (e) {
     console.error("INIT ERROR:", e);
-  } finally {
-    stopLoading(); // 🔥 zawsze się wykona
-  }
+  } 
+//    finally {
+//    stopLoading(); // 🔥 zawsze się wykona
+//  }
 }
 
 initAll();

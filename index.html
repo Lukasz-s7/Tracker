@@ -1243,6 +1243,59 @@ document.querySelectorAll(".habit").forEach(el => {
 });
 
 
+    
+async function loadTodayData() {
+  const res = await fetch(BASE_URL + "?mode=read");
+  const data = await res.json();
+
+  const today = getTodayLocal(); // 🔥 lokalna data!
+
+  return data.find(row => {
+    const d = normalizeDate(row.date);
+    return d === today;
+  });
+}
+
+
+    function normalizeDate(val) {
+  const d = new Date(val);
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+}
+
+
+    function restoreHabits(row) {
+  if (!row) return;
+
+  habits.forEach(habit => {
+    const el = document.getElementById(habit);
+    if (!el) return;
+
+    el.checked = row[habit] === true || row[habit] === "TRUE";
+  });
+}
+
+    function restoreResolutio(row) {
+  if (!row) return;
+
+  const fields = [
+    "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
+    "KSIAZKI","FILMY","TEATR","GRY","MUZYKA","KONCERTY"
+  ];
+
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    if (!el) return;
+
+    el.value = row[f] || 0;
+
+    // 🔥 jeśli masz zielone kafelki
+    if (Number(row[f]) > 0) {
+      el.closest(".res-tile")?.classList.add("active");
+    }
+  });
+}
+    
+
     // ===== RESET DNIA O PÓŁNOCY =====
 
 // zwraca dzisiejszą datę w formacie YYYY-MM-DD
@@ -1765,6 +1818,17 @@ async function loadTasks() {
 
 lucide.createIcons();
 
+
+    async function initDayState() {
+  const row = await loadTodayData();
+
+  console.log("TODAY ROW:", row);
+
+  restoreHabits(row);
+  restoreResolutio(row);
+}
+    
+
 async function initAll() {
   setLoading();
 
@@ -1772,7 +1836,8 @@ async function initAll() {
     await Promise.all([
       init().catch(e => console.error("INIT ERROR:", e)),
       initCalendar().catch(e => console.error("CALENDAR ERROR:", e)),
-      initTasks().catch(e => console.error("TASKS ERROR:", e))
+      initTasks().catch(e => console.error("TASKS ERROR:", e)),
+      initDayState()
     ]);
   } catch (e) {
     console.error("GLOBAL ERROR:", e);

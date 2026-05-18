@@ -1271,6 +1271,17 @@ async function loadTodayData() {
     if (!el) return;
 
     el.checked = row[habit] === true || row[habit] === "TRUE";
+
+    const wrapper = el.closest(".habit-tile");
+
+if (wrapper) {
+  if (el.checked) {
+    wrapper.classList.add("active");
+  } else {
+    wrapper.classList.remove("active");
+  }
+}
+
   });
 }
 
@@ -1306,15 +1317,6 @@ if (tile) {
   });
 }
 
-const wrapper = el.closest(".habit-tile");
-
-if (wrapper) {
-  if (el.checked) {
-    wrapper.classList.add("active");
-  } else {
-    wrapper.classList.remove("active");
-  }
-}
 
     
 

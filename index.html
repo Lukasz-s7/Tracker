@@ -1856,18 +1856,20 @@ lucide.createIcons();
 
 async function initAll() {
   try {
+    setLoading(); // 🔄 start spinner
+
     await Promise.all([
       initMonthView(),
       initCalendar(),
       initTasks(),
       initDayState()
     ]);
+
   } catch (e) {
     console.error("INIT ERROR:", e);
-  } 
-//    finally {
-//    stopLoading(); // 🔥 zawsze się wykona
-//  }
+  } finally {
+    setLoaded(); // ✅ ZAWSZE się wykona
+  }
 }
 
 initAll();

@@ -24,8 +24,6 @@ html, body {
       background-color: #f5f5f5;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
-      position: relative;
     }
 
     /* TOPBAR */
@@ -97,16 +95,14 @@ html, body {
       font-size: 20px;
     }
 
-    /* PANELS  */
+    /* PANELS CONTAINER */
 
    .container {
    display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
   padding: 10px;
-    padding-bottom: 80px; /* 🔥 miejsce na navbar */
   flex: 1;
- overflow: visible;
  }
 
     /* SINGLE PANEL */
@@ -115,7 +111,7 @@ html, body {
       border-radius: 12px;
   padding: 15px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-min-height: auto;
+
   display: flex;
   flex-direction: column;
     }
@@ -130,14 +126,8 @@ min-height: auto;
   justify-content: space-around;
   align-items: center;
 
-  position: fixed;
-  bottom: 10px;
-  left: 10px;
-  width: calc(100% - 20px);
-
-  z-index: 9999;
-
   background-color: #e0e0e0;
+  margin: 10px;
   padding: 10px;
 
   border-radius: 12px;
@@ -616,46 +606,26 @@ min-height: auto;
   display: flex;
   gap: 16px;
   margin-top: 16px;
-  max-width: 100%;
 }
 
-.ring {
+.habit-ring-box {
+  position: relative;
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  flex-shrink: 0;
-
-  background: conic-gradient(
-    var(--color) 0deg,
-    var(--color) var(--angle),
-    #2a2a2a var(--angle),
-    #2a2a2a 360deg
-  );
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition: background 0.6s ease;
 }
 
-.ring-inner {
-  width: 78px;
-  height: 78px;
-  background: #1e1e1e;
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 20px;
+.habit-ring-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
   font-weight: 600;
 }
 
 .habit-days-left {
   flex: 1;
-  background: #f4f6f8;
+  background: #2a2a2a;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -664,7 +634,7 @@ min-height: auto;
 }
 
 .days-number {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 600;
 }
 
@@ -678,7 +648,7 @@ min-height: auto;
   .container {
     display: flex !important;          /* nadpisuje grid */
     flex-direction: row;
-    overflow-x: scroll;
+    overflow-x: auto;
 
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
@@ -893,8 +863,8 @@ min-height: auto;
 
   <!-- RING -->
   <div class="habit-ring-box">
-     <div class="ring" id="habitRingCss">
-    <div class="ring-inner" id="habitRingLabel">0%</div>
+    <canvas id="habitRing" width="120" height="120"></canvas>
+    <div class="habit-ring-label" id="habitRingLabel">0%</div>
   </div>
 
   <!-- DNI -->
@@ -1668,20 +1638,42 @@ function calculateHabitCompletion(data, targets) {
 }
 
 function drawHabitRing(percent) {
-  const el = document.getElementById("habitRingCss");
+  const canvas = document.getElementById("habitRing");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const size = canvas.width;
+  const center = size / 2;
+  const radius = center - 10;
+
+  ctx.clearRect(0, 0, size, size);
+
+  // tło
+  ctx.beginPath();
+  ctx.arc(center, center, radius, 0, 2 * Math.PI);
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 10;
+  ctx.stroke();
+
+  // progress
+  const endAngle = (percent / 100) * 2 * Math.PI;
+
+  ctx.beginPath();
+  ctx.arc(
+    center,
+    center,
+    radius,
+    -Math.PI / 2,
+    endAngle - Math.PI / 2
+  );
+  ctx.strokeStyle = "#2ecc71";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  // label
   const label = document.getElementById("habitRingLabel");
-
-  if (!el) return;
-
-  const angle = (percent / 100) * 360;
-
-  // 🔥 dynamiczny kolor (czerwony → zielony)
-  const hue = percent * 1.2; // 0–120 (red → green)
-  const color = `hsl(${hue}, 70%, 50%)`;
-
-  el.style.setProperty("--angle", angle + "deg");
-  el.style.setProperty("--color", color);
-
   if (label) label.innerText = percent + "%";
 }
 

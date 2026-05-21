@@ -602,6 +602,47 @@ html, body {
   font-size: 14px;
 }
 
+.habit-summary {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.habit-ring-box {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.habit-ring-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.habit-days-left {
+  flex: 1;
+  background: #2a2a2a;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.days-number {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.days-label {
+  font-size: 12px;
+  opacity: 0.7;
+}    
+
     
 @media (max-width: 768px) {
   .container {
@@ -817,6 +858,23 @@ html, body {
     <div class="progress-row"><span>CRB</span><div class="progress-bar"><div class="progress-fill" id="CRB_progress"></div></div><span class="progress-count" id="CRB_count"></span></div>
     <div class="progress-row"><span>WKT</span><div class="progress-bar"><div class="progress-fill" id="WKT_progress"></div></div><span class="progress-count" id="WKT_count"></span></div>
   </div>
+
+<div class="habit-summary">
+
+  <!-- RING -->
+  <div class="habit-ring-box">
+    <canvas id="habitRing" width="120" height="120"></canvas>
+    <div class="habit-ring-label" id="habitRingLabel">0%</div>
+  </div>
+
+  <!-- DNI -->
+  <div class="habit-days-left" id="daysLeftBox">
+    <div class="days-number">0</div>
+    <div class="days-label">dni</div>
+  </div>
+
+</div>
+    
 </div>
   
     
@@ -1549,10 +1607,101 @@ if (item.key === "BGS") {
     }
   }
 });
+
+const percent = calculateHabitCompletion(data, targets);
+drawHabitRing(percent);
+
+renderDaysLeft();
   
 }
 
-    
+function calculateHabitCompletion(data, targets) {
+  const key = getCurrentMonthKey();
+  const targetRow = targets.find(r => String(r.month).trim() === key);
+
+  if (!targetRow) return 0;
+
+  let totalDone = 0;
+  let totalTarget = 0;
+
+  habits.forEach(habit => {
+    const target = Number(targetRow[habit] || 0);
+    const count = countHabit(data, habit);
+
+    totalDone += count;
+    totalTarget += target;
+  });
+
+  if (!totalTarget) return 0;
+
+  return Math.round((totalDone / totalTarget) * 100);
+}
+
+function drawHabitRing(percent) {
+  const canvas = document.getElementById("habitRing");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const size = canvas.width;
+  const center = size / 2;
+  const radius = center - 10;
+
+  ctx.clearRect(0, 0, size, size);
+
+  // tło
+  ctx.beginPath();
+  ctx.arc(center, center, radius, 0, 2 * Math.PI);
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 10;
+  ctx.stroke();
+
+  // progress
+  const endAngle = (percent / 100) * 2 * Math.PI;
+
+  ctx.beginPath();
+  ctx.arc(
+    center,
+    center,
+    radius,
+    -Math.PI / 2,
+    endAngle - Math.PI / 2
+  );
+  ctx.strokeStyle = "#2ecc71";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  // label
+  const label = document.getElementById("habitRingLabel");
+  if (label) label.innerText = percent + "%";
+}
+
+
+    function calculateDaysLeft() {
+  const now = new Date();
+
+  const end = new Date(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    0
+  );
+
+  const diff = Math.ceil(
+    (end - now) / (1000 * 60 * 60 * 24)
+  ) + 1;
+
+  return diff;
+}
+
+    function renderDaysLeft() {
+  const el = document.getElementById("daysLeftBox");
+  if (!el) return;
+
+  const days = calculateDaysLeft();
+
+  el.querySelector(".days-number").innerText = days;
+}
 
     async function loadCalendar() {
   const res = await fetch(BASE_URL + "?mode=calendar");

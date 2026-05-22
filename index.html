@@ -1992,6 +1992,8 @@ async function initYearView() {
   const data = await loadData();       // twoje "data"
   const targets = await loadTargets(); // twoje targets
 
+  window._data = data;   // 🔥 DEBUG
+
 //  updateYearProgress(data, targets);
   renderYearResolutio(data, targets);
 }

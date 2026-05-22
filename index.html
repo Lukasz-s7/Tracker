@@ -1985,6 +1985,7 @@ async function initYearView() {
   const targets = await loadTargets(); // twoje targets
 
   updateYearProgress(data, targets);
+  renderYearResolutio(data, targets);
 }
     
     async function initCalendar() {
@@ -2082,6 +2083,66 @@ function sumYearField(data, field) {
     }
   });
 }
+
+    function renderYearResolutio(data, targets) {
+  if (!Array.isArray(data)) return;
+
+  const fields = [
+    "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
+    "KSIAZKI","FILMY","TEATR","GRY","MUZYKA","KONCERTY"
+  ];
+
+  // 🔥 SUMY roczne
+  const sums = {};
+  fields.forEach(f => sums[f] = 0);
+
+  data.forEach(row => {
+    fields.forEach(f => {
+      sums[f] += Number(row[f] || 0);
+    });
+  });
+
+  // 🔥 TARGETY roczne (suma miesięcznych)
+  const yearlyTargets = {};
+  fields.forEach(f => yearlyTargets[f] = 0);
+
+  targets.forEach(t => {
+    fields.forEach(f => {
+      yearlyTargets[f] += Number(t[f] || 0);
+    });
+  });
+
+  // 🔥 RENDER
+  fields.forEach(f => {
+    const bar = document.getElementById(f + "_year_progress");
+    const count = document.getElementById(f + "_year_count");
+
+    if (!bar || !count) return;
+
+    const sum = sums[f];
+    const target = yearlyTargets[f];
+
+    const percent = target
+      ? Math.min(100, Math.round((sum / target) * 100))
+      : 0;
+
+    // szerokość
+    bar.style.width = percent + "%";
+
+    // 🔥 GRADIENT (jak w month)
+    bar.style.background = percent > 80
+      ? "#2ecc71"
+      : percent > 50
+      ? "#f1c40f"
+      : "#e74c3c";
+
+    // tekst
+    bar.textContent = percent + "%";
+    count.textContent = sum + " / " + target;
+  });
+}
+
+    
     
 
     function initMetricsState() {

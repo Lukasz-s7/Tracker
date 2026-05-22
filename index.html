@@ -2098,73 +2098,62 @@ function sumYearField(data, field) {
     function renderYearResolutio(data, targets) {
   if (!Array.isArray(data)) return;
 
-  const fields = [
-    "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
-    "KSIAZKI","FILMY","TEATR","GRY","MUZYKA","KONCERTY"
-  ];
+  const fields = resolutioFields; // 🔥 KLUCZ
 
-  const sums = {};
-  const yearlyTargets = {};
+  fields.forEach(item => {
 
-  fields.forEach(f => {
-    sums[f] = 0;
-    yearlyTargets[f] = 0;
-  });
+    const sum = data.reduce((acc, row) => {
+      return acc + Number(row[item.sheet] || 0); // 🔥 sheet
+    }, 0);
 
-  // 🔥 SUMY
-  data.forEach(row => {
-    fields.forEach(f => {
-      const key = FIELD_MAP[f] || f;
-      const val = Number(row[f]);
-      if (!isNaN(val)) {
-        sums[f] += val;
-      }
-    });
-  });
+    const target = targets.reduce((acc, t) => {
+      return acc + Number(t[item.sheet] || 0); // 🔥 sheet
+    }, 0);
 
-  // 🔥 TARGETY
-  if (Array.isArray(targets)) {
-    targets.forEach(t => {
-      fields.forEach(f => {
-        const key = FIELD_MAP[f] || f;
-        const val = Number(t[f]);
-        if (!isNaN(val)) {
-          yearlyTargets[f] += val;
-        }
-      });
-    });
-  }
-
-  console.log("YEAR SUMS:", sums);
-  console.log("YEAR TARGETS:", yearlyTargets);
-
-  // 🔥 RENDER
-  fields.forEach(f => {
-const bar = document.getElementById("year_" + f + "_progress");
-const count = document.getElementById("year_" + f + "_count");
+    const bar = document.getElementById("year_" + item.key + "_progress");
+    const count = document.getElementById("year_" + item.key + "_count");
 
     if (!bar || !count) {
-      console.warn("Missing DOM for:", f);
+      console.warn("Missing DOM for:", item.key);
       return;
     }
 
-    const sum = sums[f];
-    const target = yearlyTargets[f];
+    let percent;
 
-    const percent = target > 0
-      ? Math.min(100, Math.round((sum / target) * 100))
-      : 0;
+    if (item.key === "BGS") {
+      percent = target
+        ? Math.min(100, Math.round(((target - sum) / target) * 100))
+        : 0;
 
+      bar.classList.add("reverse");
+    } else {
+      percent = target
+        ? Math.min(100, Math.round((sum / target) * 100))
+        : 0;
+
+      bar.classList.remove("reverse");
+    }
+
+    // szerokość
     bar.style.width = percent + "%";
 
+    // 🔥 gradient
     bar.style.background = percent > 80
       ? "#2ecc71"
       : percent > 50
       ? "#f1c40f"
       : "#e74c3c";
 
+    // tekst
     bar.textContent = percent + "%";
-    count.textContent = sum + " / " + target;
+
+    if (item.key === "BGS") {
+      const remaining = Math.max(0, target - sum);
+      count.textContent = `${remaining} / ${target}`;
+    } else {
+      count.textContent = `${sum} / ${target}`;
+    }
+
   });
 }
 

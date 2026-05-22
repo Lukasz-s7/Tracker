@@ -1794,6 +1794,14 @@ function drawHabitRing(percent) {
   if (label) label.innerText = percent + "%";
 }
 
+    const FIELD_MAP = {
+  KSIAZKI: "Ksiazki",
+  FILMY: "Filmy",
+  TEATR: "Teatr",
+  GRY: "Gry",
+  MUZYKA: "Muzyka",
+  KONCERTY: "Koncerty"
+};
 
     function calculateDaysLeft() {
   const now = new Date();
@@ -2071,6 +2079,7 @@ function sumYearField(data, field) {
   // 🔥 SUMY
   data.forEach(row => {
     fields.forEach(f => {
+      const key = FIELD_MAP[f] || f;
       const val = Number(row[f]);
       if (!isNaN(val)) {
         sums[f] += val;
@@ -2082,6 +2091,7 @@ function sumYearField(data, field) {
   if (Array.isArray(targets)) {
     targets.forEach(t => {
       fields.forEach(f => {
+        const key = FIELD_MAP[f] || f;
         const val = Number(t[f]);
         if (!isNaN(val)) {
           yearlyTargets[f] += val;

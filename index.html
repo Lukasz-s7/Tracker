@@ -2095,8 +2095,8 @@ function sumYearField(data, field) {
 
   // 🔥 RENDER
   fields.forEach(f => {
-    const bar = document.getElementById(f + "_year_progress");
-    const count = document.getElementById(f + "_year_count");
+const bar = document.getElementById("year_" + f + "_progress");
+const count = document.getElementById("year_" + f + "_count");
 
     if (!bar || !count) {
       console.warn("Missing DOM for:", f);

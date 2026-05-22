@@ -1326,9 +1326,20 @@ lifeBtn.addEventListener("click", () => {
    
 
 
-    async function loadData() {
-  const res = await fetch("https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec" + "?mode=read");
-  return await res.json();
+unction loadData() {
+  return new Promise(resolve => {
+    const callbackName = "cb_data_" + Date.now();
+
+    window[callbackName] = function(data) {
+      resolve(data);
+      delete window[callbackName];
+    };
+
+    const script = document.createElement("script");
+    script.src = BASE_URL + "?mode=read&callback=" + callbackName;
+
+    document.body.appendChild(script);
+  });
 }
 
     
@@ -1593,9 +1604,20 @@ document.querySelectorAll('input[type="number"]').forEach(inp => {
 
 const BASE_URL = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec";
 
-async function loadTargets() {
-  const res = await fetch(BASE_URL + "?mode=targets");
-  return await res.json();
+function loadTargets() {
+  return new Promise(resolve => {
+    const cb = "cb_targets_" + Date.now();
+
+    window[cb] = data => {
+      resolve(data);
+      delete window[cb];
+    };
+
+    const script = document.createElement("script");
+    script.src = BASE_URL + "?mode=targets&callback=" + cb;
+
+    document.body.appendChild(script);
+  });
 }
 
 function getCurrentMonthKey() {
@@ -1828,9 +1850,20 @@ function drawHabitRing(percent) {
   el.querySelector(".days-number").innerText = days;
 }
 
-    async function loadCalendar() {
-  const res = await fetch(BASE_URL + "?mode=calendar");
-  return await res.json();
+    function loadCalendar() {
+  return new Promise(resolve => {
+    const cb = "cb_calendar_" + Date.now();
+
+    window[cb] = data => {
+      resolve(data);
+      delete window[cb];
+    };
+
+    const script = document.createElement("script");
+    script.src = BASE_URL + "?mode=calendar&callback=" + cb;
+
+    document.body.appendChild(script);
+  });
 }
 
     function getToday() {
@@ -2161,9 +2194,20 @@ setTimeout(initMonthView, 50);
 
 
     
-async function loadTasks() {
-  const res = await fetch(BASE_URL + "?mode=tasks");
-  return await res.json();
+function loadTasks() {
+  return new Promise(resolve => {
+    const cb = "cb_tasks_" + Date.now();
+
+    window[cb] = data => {
+      resolve(data);
+      delete window[cb];
+    };
+
+    const script = document.createElement("script");
+    script.src = BASE_URL + "?mode=tasks&callback=" + cb;
+
+    document.body.appendChild(script);
+  });
 }
 
     function filterTodayTasks(data) {

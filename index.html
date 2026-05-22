@@ -2149,7 +2149,7 @@ function sumYearField(data, field) {
 
     if (item.key === "BGS") {
       const remaining = Math.max(0, target - sum);
-      count.textContent = `${remaining} / ${target}`;
+      count.textContent = `${sum} / ${remaining}`;
     } else {
       count.textContent = `${sum} / ${target}`;
     }

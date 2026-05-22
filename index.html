@@ -1028,9 +1028,125 @@ html, body {
     <div class="panel-title-center">HABITUM</div>
   </div>
 
+ <!-- 🔥 RESOLUTIO (ROK) -->
   <div class="panel">
     <div class="panel-title-center">RESOLUTIO</div>
+
+    <!-- PROVOCATIO -->
+    <div class="section">
+      <div class="section-title">Provocatio</div>
+
+      <div class="progress-row">
+        <span>BGS</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_BGS_progress"></div>
+        </div>
+        <span class="progress-count" id="year_BGS_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>BTS</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_BTS_progress"></div>
+        </div>
+        <span class="progress-count" id="year_BTS_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>ICS</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_ICS_progress"></div>
+        </div>
+        <span class="progress-count" id="year_ICS_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>RNN</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_RNN_progress"></div>
+        </div>
+        <span class="progress-count" id="year_RNN_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>BCG</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_BCG_progress"></div>
+        </div>
+        <span class="progress-count" id="year_BCG_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>PGN</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_PGN_progress"></div>
+        </div>
+        <span class="progress-count" id="year_PGN_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>SPI</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_SPI_progress"></div>
+        </div>
+        <span class="progress-count" id="year_SPI_count"></span>
+      </div>
+    </div>
+
+    <!-- CULTURA -->
+    <div class="section">
+      <div class="section-title">Cultura</div>
+
+      <div class="progress-row">
+        <span>Książki</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_KSIAZKI_progress"></div>
+        </div>
+        <span class="progress-count" id="year_KSIAZKI_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>Filmy</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_FILMY_progress"></div>
+        </div>
+        <span class="progress-count" id="year_FILMY_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>Teatr</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_TEATR_progress"></div>
+        </div>
+        <span class="progress-count" id="year_TEATR_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>Gry</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_GRY_progress"></div>
+        </div>
+        <span class="progress-count" id="year_GRY_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>Muzyka</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_MUZYKA_progress"></div>
+        </div>
+        <span class="progress-count" id="year_MUZYKA_count"></span>
+      </div>
+
+      <div class="progress-row">
+        <span>Koncerty</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="year_KONCERTY_progress"></div>
+        </div>
+        <span class="progress-count" id="year_KONCERTY_count"></span>
+      </div>
+    </div>
   </div>
+
 
   <div class="panel">
     <div class="panel-title-center">CONSILIA</div>
@@ -1200,6 +1316,7 @@ monthBtn.addEventListener("click", () => {
 
 yearBtn.addEventListener("click", () => {
   switchView({ view: yearView, button: yearBtn });
+  initYearView();
 });
 
 lifeBtn.addEventListener("click", () => {
@@ -1863,7 +1980,12 @@ function sumField(data, field) {
   return Math.min(100, Math.round((sum / target) * 100));
 }
 
+async function initYearView() {
+  const data = await loadData();       // twoje "data"
+  const targets = await loadTargets(); // twoje targets
 
+  updateYearProgress(data, targets);
+}
     
     async function initCalendar() {
   const data = await loadCalendar();
@@ -1909,6 +2031,58 @@ document.querySelectorAll(".metric input").forEach(inp => {
   });
 });  
 
+function sumYearField(data, field) {
+  const now = new Date();
+  const year = now.getFullYear();
+
+  let sum = 0;
+
+  data.forEach(row => {
+    if (!row.date) return;
+
+    const d = new Date(row.date);
+
+    if (d.getFullYear() === year) {
+      sum += Number(row[field] || 0);
+    }
+  });
+
+  return sum;
+}
+
+    function updateYearProgress(data, targets) {
+
+  const fields = [
+    "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
+    "KSIAZKI","FILMY","TEATR","GRY","MUZYKA","KONCERTY"
+  ];
+
+  fields.forEach(key => {
+
+    const sum = sumYearField(data, key);
+    const target = getYearTarget(targets, key);
+
+    const percent = calculateSumProgress(sum, target);
+
+    const bar = document.getElementById(key + "_year_progress");
+    const count = document.getElementById(key + "_year_count");
+
+    if (!bar || !count) return;
+
+    bar.style.width = percent + "%";
+    bar.textContent = percent + "%";
+
+    count.textContent = `${sum} / ${target}`;
+
+    // 🔥 BGS odwrotnie jak w miesiącu
+    if (key === "BGS") {
+      bar.classList.add("reverse");
+    } else {
+      bar.classList.remove("reverse");
+    }
+  });
+}
+    
 
     function initMetricsState() {
   document.querySelectorAll(".metric input").forEach(inp => {

@@ -1849,17 +1849,20 @@ const habitFields = [
     const targetRow = targets.find(t => String(t.month).trim() === monthKey);
     if (!targetRow) return;
 
+    console.log("DEBUG:", habit, monthKey, targetRow);
+
     const target = Number(targetRow[habit] || 0);
     if (!target) return;
 
     const percent = getMonthPercent(rows, habit, target, monthKey);
 
+    console.log("PERCENT:", habit, monthKey, percent);
+    
     sum += percent;
     count++;
   });
 
-console.log("CHECK MONTH:", monthKey, targetRow);
-console.log(habit, monthKey, percent);
+    console.log("FINAL:", habit, sum, count);
 
   return count ? Math.round(sum / count) : 0;
 }

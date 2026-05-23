@@ -1822,22 +1822,6 @@ const habitFields = [
 
   if (!target) return 0;
 
-  const now = new Date();
-
-  // 🔥 lokalny monthKey (bez UTC)
-  const currentKey =
-    now.getFullYear() +
-    "-" +
-    String(now.getMonth() + 1).padStart(2, "0");
-
-  // 🔥 BIEŻĄCY MIESIĄC → licz względem dni
-  if (monthKey === currentKey) {
-    const today = now.getDate();
-
-    return Math.min(100, Math.round((done / today) * 100));
-  }
-
-  // 🔥 PEŁNE MIESIĄCE
   return Math.min(100, Math.round((done / target) * 100));
 }
 

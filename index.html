@@ -1028,8 +1028,41 @@ html, body {
 <div id="yearView" class="container hidden">
 
   <div class="panel">
-    <div class="panel-title-center">HABITUM</div>
+  <div class="panel-title-center">HABITUM</div>
+
+  <!-- FACTUM -->
+  <div class="section">
+    <div class="section-title">Factum</div>
+
+    <div class="progress-row"><span>MRT</span><div class="progress-bar"><div class="progress-fill" id="year_MRT_progress"></div></div></div>
+    <div class="progress-row"><span>ERT</span><div class="progress-bar"><div class="progress-fill" id="year_ERT_progress"></div></div></div>
+    <div class="progress-row"><span>TKS</span><div class="progress-bar"><div class="progress-fill" id="year_TKS_progress"></div></div></div>
   </div>
+
+  <!-- PSYCHE -->
+  <div class="section">
+    <div class="section-title">Psyche</div>
+
+    <div class="progress-row"><span>BKS</span><div class="progress-bar"><div class="progress-fill" id="year_BKS_progress"></div></div></div>
+    <div class="progress-row"><span>DVP</span><div class="progress-bar"><div class="progress-fill" id="year_DVP_progress"></div></div></div>
+    <div class="progress-row"><span>KDS</span><div class="progress-bar"><div class="progress-fill" id="year_KDS_progress"></div></div></div>
+    <div class="progress-row"><span>RLT</span><div class="progress-bar"><div class="progress-fill" id="year_RLT_progress"></div></div></div>
+  </div>
+
+  <!-- SOMA -->
+  <div class="section">
+    <div class="section-title">Soma</div>
+
+    <div class="progress-row"><span>BHB</span><div class="progress-bar"><div class="progress-fill" id="year_BHB_progress"></div></div></div>
+    <div class="progress-row"><span>WND</span><div class="progress-bar"><div class="progress-fill" id="year_WND_progress"></div></div></div>
+    <div class="progress-row"><span>CRB</span><div class="progress-bar"><div class="progress-fill" id="year_CRB_progress"></div></div></div>
+    <div class="progress-row"><span>WKT</span><div class="progress-bar"><div class="progress-fill" id="year_WKT_progress"></div></div></div>
+  </div>
+
+</div>
+
+
+  
 
  <!-- 🔥 RESOLUTIO (ROK) -->
   <div class="panel">
@@ -1757,6 +1790,112 @@ renderDaysLeft();
   
 }
 
+const habitFields = [
+  "MRT","ERT","TKS",
+  "BKS","DVP","KDS","RLT",
+  "BHB","WND","CRB","WKT"
+];
+
+ function groupByMonth(data) {
+  const map = {};
+
+  data.forEach(row => {
+    if (!row.date) return;
+
+    const key = row.date.slice(0, 7); // yyyy-mm
+
+    if (!map[key]) map[key] = [];
+    map[key].push(row);
+  });
+
+  return map;
+}
+
+    function getDaysInMonth(year, month) {
+  return new Date(year, month, 0).getDate();
+}
+
+    function getMonthPercent(rows, habit, target, monthKey) {
+  const done = rows.filter(r => r[habit] === true).length;
+
+  if (!target) return 0;
+
+  const now = new Date();
+  const currentKey = now.toISOString().slice(0, 7);
+
+  let effectiveTarget = target;
+
+  if (monthKey === currentKey) {
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+
+    const daysInMonth = getDaysInMonth(year, month);
+    const today = now.getDate();
+
+    effectiveTarget = target * (today / daysInMonth);
+  }
+
+  return Math.min(100, Math.round((done / effectiveTarget) * 100));
+}
+
+
+    function getYearAverage(dataByMonth, habit, targets) {
+  let sum = 0;
+  let count = 0;
+
+  Object.keys(dataByMonth).forEach(monthKey => {
+    const rows = dataByMonth[monthKey];
+
+    const targetRow = targets.find(t => String(t.month).trim() === monthKey);
+    if (!targetRow) return;
+
+    const target = Number(targetRow[habit] || 0);
+    if (!target) return;
+
+    const percent = getMonthPercent(rows, habit, target, monthKey);
+
+    sum += percent;
+    count++;
+  });
+
+  return count ? Math.round(sum / count) : 0;
+}
+
+
+    function renderYearHabits(data, targets) {
+
+  const dataByMonth = groupByMonth(data);
+
+  habitFields.forEach(habit => {
+
+    const percent = getYearAverage(dataByMonth, habit, targets);
+
+    const bar = document.getElementById("year_" + habit + "_progress");
+    if (!bar) return;
+
+    // szerokość
+    bar.style.width = percent + "%";
+
+    // gradient jak wszędzie
+    bar.style.background = percent > 80
+      ? "#2ecc71"
+      : percent > 50
+      ? "#f1c40f"
+      : "#e74c3c";
+
+    // tekst w środku
+    bar.textContent = percent + "%";
+
+  });
+}
+
+
+    
+
+
+
+    
+
 function calculateHabitCompletion(data, targets) {
   const key = getCurrentMonthKey();
   const targetRow = targets.find(r => String(r.month).trim() === key);
@@ -2029,6 +2168,8 @@ async function initYearView() {
   const targets = await loadTargets(); // twoje targets
 
   window._data = data;   // 🔥 DEBUG
+
+  renderYearHabits(data, targets);
 
 //  updateYearProgress(data, targets);
   renderYearResolutio(data, targets);

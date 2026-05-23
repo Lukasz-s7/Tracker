@@ -1858,6 +1858,9 @@ const habitFields = [
     count++;
   });
 
+console.log("CHECK MONTH:", monthKey, targetRow);
+console.log(habit, monthKey, percent);
+
   return count ? Math.round(sum / count) : 0;
 }
 
@@ -2429,8 +2432,7 @@ async function initAll() {
 
 initAll();
 
-console.log("CHECK MONTH:", monthKey, targetRow);
-console.log(habit, monthKey, percent);
+
     
     
   </script>

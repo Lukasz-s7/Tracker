@@ -790,6 +790,13 @@ html, body {
 
 </div>
 
+
+    
+<div class="panel">
+      <div class="panel-title-center">CONSILIA</div>
+    </div>
+
+    
     
     <div class="panel">
   <div class="panel-title-center">EXECUTIO</div>
@@ -813,11 +820,7 @@ html, body {
 
 
     
-    <div class="panel">
-      <div class="panel-title-center">CONSILIA</div>
-    </div>
-
-    
+       
 
   </div>
 
@@ -2149,7 +2152,7 @@ function sumYearField(data, field) {
 
     if (item.key === "BGS") {
       const remaining = Math.max(0, target - sum);
-      count.textContent = `${sum} / ${remaining}`;
+      count.textContent = `${sum}/${remaining}`;
     } else {
       count.textContent = `${sum} / ${target}`;
     }
@@ -2272,6 +2275,7 @@ async function initAll() {
       initMonthView(),
       initCalendar(),
       initTasks(),
+      initYearView(),
       initDayState()
     ]);
 

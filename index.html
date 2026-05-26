@@ -1516,28 +1516,39 @@ async function loadTodayData() {
   if (!row) return;
 
   const fields = [
-    "BGS","BTS","ICS","RNN","BCG","PGN","SPI",
-    "KSIAZKI","FILMY","TEATR","GRY","MUZYKA","KONCERTY"
-  ];
+  { key: "BGS", sheet: "BGS" },
+  { key: "BTS", sheet: "BTS" },
+  { key: "ICS", sheet: "ICS" },
+  { key: "RNN", sheet: "RNN" },
+  { key: "BCG", sheet: "BCG" },
+  { key: "PGN", sheet: "PGN" },
+  { key: "SPI", sheet: "SPI" },
 
-  fields.forEach(f => {
-    const input = document.getElementById(f);
-    if (!input) return;
+  { key: "KSIAZKI", sheet: "Ksiazki" },
+  { key: "FILMY", sheet: "Filmy" },
+  { key: "TEATR", sheet: "Teatr" },
+  { key: "GRY", sheet: "Gry" },
+  { key: "MUZYKA", sheet: "Muzyka" },
+  { key: "KONCERTY", sheet: "Koncerty" }
+];
 
-    const val = Number(row[f]) || 0;
+  fields.forEach(item => {
+  const input = document.getElementById(item.key);
+  if (!input) return;
 
-    input.value = val;
+  const val = Number(row[item.sheet]) || 0;
 
-    const tile = input.closest(".metric");
+  input.value = val;
 
-    if (!tile) return;
+  const tile = input.closest(".metric");
+  if (!tile) return;
 
-    if (val > 0) {
-      tile.classList.add("active");
-    } else {
-      tile.classList.remove("active");
-    }
-  });
+  if (val > 0) {
+    tile.classList.add("active");
+  } else {
+    tile.classList.remove("active");
+  }
+});
 }
 
 

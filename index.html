@@ -1742,6 +1742,7 @@ if (countEl) {
 async function initMonthView() {
   const data = await loadMonthData();
   const targets = await loadTargets();
+  const cultura = await loadCultura();
 
   const key = getCurrentMonthKey();
   const targetRow = targets.find(r => String(r.month).trim() === key);
@@ -1801,6 +1802,7 @@ const percent = calculateHabitCompletion(data, targets);
 drawHabitRing(percent);
 
 renderDaysLeft();
+renderCultura(cultura);
   
 }
 

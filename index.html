@@ -1002,21 +1002,25 @@ html, body {
   </div>
 </div>
 
+
+    
   <div class="panel">
     <div class="panel-title-center">CONSILIA</div>
   </div>
 
+
+    
   <div class="panel">
   <div class="panel-title-center">EXECUTIO</div>
 
   <div class="exec-month-list">
 
-    <div class="exec-month-item"><i data-lucide="book"></i><span>Książka:</span></div>
-    <div class="exec-month-item"><i data-lucide="film"></i><span>Film:</span></div>
-    <div class="exec-month-item"><i data-lucide="drama"></i><span>Spektakl:</span></div>
-    <div class="exec-month-item"><i data-lucide="gamepad-2"></i><span>Gra:</span></div>
-    <div class="exec-month-item"><i data-lucide="disc"></i><span>Album:</span></div>
-    <div class="exec-month-item"><i data-lucide="mic"></i><span>Koncert:</span>
+    <div class="exec-month-item"><i data-lucide="book"></i><span>:</span></div>
+    <div class="exec-month-item"><i data-lucide="film"></i><span>:</span></div>
+    <div class="exec-month-item"><i data-lucide="drama"></i><span>:</span></div>
+    <div class="exec-month-item"><i data-lucide="gamepad-2"></i><span>:</span></div>
+    <div class="exec-month-item"><i data-lucide="disc"></i><span></span></div>
+    <div class="exec-month-item"><i data-lucide="mic"></i><span>:</span>
     </div>
 
   </div>
@@ -1865,7 +1869,26 @@ const habitFields = [
   return count ? Math.round(sum / count) : 0;
 }
 
+async function loadCultura() {
+  const res = await fetch(API_URL + "?mode=cultura");
+  return await res.json();
+}
 
+    function renderCultura(list) {
+  if (!Array.isArray(list)) return;
+
+  list.slice(0, 6).forEach((row, i) => {
+    const el = document.getElementById("cultura_" + i);
+    if (!el) return;
+
+    // 🔥 użyj nazwy kolumny z sheets!
+    const value = row.value || "";
+
+    el.textContent = ": " + value;
+  });
+}
+
+    
     function renderYearHabits(data, targets) {
 
   const dataByMonth = groupByMonth(data);

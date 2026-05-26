@@ -1871,7 +1871,7 @@ const habitFields = [
 }
 
 async function loadCultura() {
-  const res = await fetch(API_URL + "?mode=cultura");
+  const res = await fetch(BASE_URL + "?mode=cultura");
   return await res.json();
 }
 

@@ -1707,8 +1707,12 @@ function loadData() {
 
 
 function saveCurrentDay() {
-  const payload = {
-    date: getToday(),
+
+  const date = getToday();
+
+  // ===== 1. DATA (habit + resolutio) =====
+  const payloadData = {
+    date,
 
     MRT: document.getElementById("MRT")?.checked || false,
     ERT: document.getElementById("ERT")?.checked || false,
@@ -1721,6 +1725,7 @@ function saveCurrentDay() {
     WND: document.getElementById("WND")?.checked || false,
     CRB: document.getElementById("CRB")?.checked || false,
     WKT: document.getElementById("WKT")?.checked || false,
+
     BGS: getNumber("BGS"),
     BTS: getNumber("BTS"),
     ICS: getNumber("ICS"),
@@ -1734,7 +1739,22 @@ function saveCurrentDay() {
     TEATR: getNumber("TEATR"),
     GRY: getNumber("GRY"),
     MUZYKA: getNumber("MUZYKA"),
-    KONCERTY: getNumber("KONCERTY"),
+    KONCERTY: getNumber("KONCERTY")
+  };
+
+  const paramsData = new URLSearchParams();
+  Object.keys(payloadData).forEach(k => paramsData.append(k, payloadData[k]));
+
+  const urlData = BASE_URL + "?" + paramsData.toString();
+
+  console.log("SAVE DATA:", urlData);
+
+  new Image().src = urlData;
+
+
+  // ===== 2. CONSILIA (projekty) =====
+  const payloadConsilia = {
+    date,
 
     Apps: document.getElementById("Apps")?.checked || false,
     Ksiazka: document.getElementById("Ksiazka")?.checked || false,
@@ -1751,23 +1771,16 @@ function saveCurrentDay() {
     Piwnica: document.getElementById("Piwnica")?.checked || false,
     Jezyk: document.getElementById("Jezyk")?.checked || false,
     Zdrowie: document.getElementById("Zdrowie")?.checked || false
-  
   };
 
-  console.log("PAYLOAD:", payload);
+  const paramsConsilia = new URLSearchParams();
+  Object.keys(payloadConsilia).forEach(k => paramsConsilia.append(k, payloadConsilia[k]));
 
-  const params = new URLSearchParams();
+  const urlConsilia = BASE_URL + "?mode=save_consilia&" + paramsConsilia.toString();
 
-  Object.keys(payload).forEach(key => {
-    params.append(key, payload[key]);
-  });
+  console.log("SAVE CONSILIA:", urlConsilia);
 
-  const url = "https://script.google.com/macros/s/AKfycbzXICOb9VnflswkH9HgHP7QW_U7mCJTlrbwEObbQ6cfUZNuCwuNv-i6YCNWaVL133SP/exec"
-    + "?" + params.toString();
-
-  console.log("URL:", url);
-
-  new Image().src = url;
+  new Image().src = urlConsilia;
 }
 
 // 🔥 eventy dla checkboxów

@@ -2794,24 +2794,48 @@ const consiliaMap = {
 document.querySelectorAll(".consilia-item").forEach(tile => {
   tile.addEventListener("click", () => {
 
+    tile.classList.toggle("active");
+
     const id = tile.dataset.id;
     const input = document.getElementById(id);
 
-    if (!input) {
-      console.warn("Brak inputa dla:", id);
-      return;
+    if (input) {
+      input.checked = tile.classList.contains("active");
     }
 
-    const newValue = !input.checked;
-    input.checked = newValue;
-
-    tile.classList.toggle("active", newValue);
-
-    console.log("CONSILIA CLICK:", id, newValue);
-
-    saveCurrentDay(); // 🔥 zapis
+    saveConsilia(); // 🔥 WAŻNE (nie saveCurrentDay)
   });
 });
+});
+
+    function saveConsilia() {
+  const payload = {
+    mode: "save_consilia",
+    date: getToday(),
+
+    Apps: document.getElementById("Apps")?.checked || false,
+    Ksiazka: document.getElementById("Ksiazka")?.checked || false,
+    Akai: document.getElementById("Akai")?.checked || false,
+    Pamiec: document.getElementById("Pamiec")?.checked || false,
+    Prepp: document.getElementById("Prepp")?.checked || false,
+    Strzelnica: document.getElementById("Strzelnica")?.checked || false,
+    Lacznosc: document.getElementById("Lacznosc")?.checked || false,
+    Chrzciny: document.getElementById("Chrzciny")?.checked || false,
+    Ekskursje: document.getElementById("Ekskursje")?.checked || false,
+    Amor: document.getElementById("Amor")?.checked || false,
+    Foto: document.getElementById("Foto")?.checked || false,
+    Remonty: document.getElementById("Remonty")?.checked || false,
+    Piwnica: document.getElementById("Piwnica")?.checked || false,
+    Jezyk: document.getElementById("Jezyk")?.checked || false,
+    Zdrowie: document.getElementById("Zdrowie")?.checked || false
+  };
+
+  const params = new URLSearchParams(payload);
+
+  const url = BASE_URL + "?" + params.toString();
+
+  new Image().src = url;
+}
 
     
     function loadConsilia() {

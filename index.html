@@ -672,6 +672,91 @@ html, body {
 .hidden {
   display: none !important;
 }
+
+.consilia-container {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.consilia-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.consilia-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.consilia-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+/* kafelek */
+.consilia-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 12px;
+  border-radius: 12px;
+
+  background: #f4f6f7;
+  border: 1px solid #e0e0e0;
+
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.consilia-item:hover {
+  transform: scale(1.02);
+}
+
+.consilia-item.active {
+  background: #2ecc71;
+  color: white;
+  border-color: #2ecc71;
+  box-shadow: 0 4px 10px rgba(46, 204, 113, 0.25);
+}
+
+/* checkbox */
+.consilia-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid #bbb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.consilia-item.active .consilia-check {
+  background: white;
+  border-color: white;
+}
+
+.consilia-item.active .consilia-check::after {
+  content: "✓";
+  font-size: 14px;
+  font-weight: bold;
+  color: #2ecc71;
+}
+
+/* tekst */
+.consilia-item span {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+
+
+
     
   </style>
 </head>
@@ -793,8 +878,64 @@ html, body {
 
     
 <div class="panel">
-      <div class="panel-title-center">CONSILIA</div>
+  <div class="panel-title-center">CONSILIA</div>
+
+  <div class="consilia-container">
+
+    <!-- PROFESSIO -->
+    <div class="consilia-section">
+      <div class="consilia-title">Professio</div>
+      <div class="consilia-grid">
+
+        <div class="consilia-item" data-id="P1"><div class="consilia-check"></div><span>Apps</span></div>
+        <div class="consilia-item" data-id="P2"><div class="consilia-check"></div><span>Książka</span></div>
+        <div class="consilia-item" data-id="P3"><div class="consilia-check"></div><span>Muzyka</span></div>
+        <div class="consilia-item" data-id="P4"><div class="consilia-check"></div><span>---</span></div>
+
+      </div>
     </div>
+
+    <!-- SOCIETAS -->
+    <div class="consilia-section">
+      <div class="consilia-title">Societas</div>
+      <div class="consilia-grid">
+
+        <div class="consilia-item" data-id="P5"><div class="consilia-check"></div><span>Pamięć</span></div>
+        <div class="consilia-item" data-id="P6"><div class="consilia-check"></div><span>Prepp</span></div>
+        <div class="consilia-item" data-id="P7"><div class="consilia-check"></div><span>Strzelnica</span></div>
+        <div class="consilia-item" data-id="P8"><div class="consilia-check"></div><span>Łączność</span></div>
+
+      </div>
+    </div>
+
+    <!-- FAMILIA -->
+    <div class="consilia-section">
+      <div class="consilia-title">Familia</div>
+      <div class="consilia-grid">
+
+        <div class="consilia-item" data-id="P9"><div class="consilia-check"></div><span>Chrzciny</span></div>
+        <div class="consilia-item" data-id="P10"><div class="consilia-check"></div><span>Ekskursje</span></div>
+        <div class="consilia-item" data-id="P11"><div class="consilia-check"></div><span>Amor</span></div>
+        <div class="consilia-item" data-id="P12"><div class="consilia-check"></div><span>Foto</span></div>
+
+      </div>
+    </div>
+
+    <!-- PERSONALE -->
+    <div class="consilia-section">
+      <div class="consilia-title">Personale</div>
+      <div class="consilia-grid">
+
+        <div class="consilia-item" data-id="P13"><div class="consilia-check"></div><span>Remonty</span></div>
+        <div class="consilia-item" data-id="P14"><div class="consilia-check"></div><span>Piwnica</span></div>
+        <div class="consilia-item" data-id="P15"><div class="consilia-check"></div><span>Język</span></div>
+        <div class="consilia-item" data-id="P16"><div class="consilia-check"></div><span>Zdrowie</span></div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
 
     
     
@@ -2353,7 +2494,13 @@ initMetricsState();
 
 setTimeout(initMonthView, 50);
 
-
+function initConsilia() {
+  document.querySelectorAll(".consilia-item").forEach(item => {
+    item.addEventListener("click", () => {
+      item.classList.toggle("active");
+    });
+  });
+}
     
 function loadTasks() {
   return new Promise(resolve => {
@@ -2445,7 +2592,8 @@ async function initAll() {
       initCalendar(),
       initTasks(),
       initYearView(),
-      initDayState()
+      initDayState(),
+      initConsilia()
     ]);
 
   } catch (e) {
@@ -2455,6 +2603,10 @@ async function initAll() {
   }
 }
 
+
+
+
+    
 initAll();
 
 

@@ -941,6 +941,27 @@ html, body {
   </div>
 </div>
 
+<div id="consiliaInputs" style="display:none;">
+
+  <input type="checkbox" id="Apps">
+  <input type="checkbox" id="Ksiazka">
+  <input type="checkbox" id="Akai">
+  <input type="checkbox" id="Pamiec">
+  <input type="checkbox" id="Prepp">
+  <input type="checkbox" id="Strzelnica">
+  <input type="checkbox" id="Lacznosc">
+  <input type="checkbox" id="Chrzciny">
+  <input type="checkbox" id="Ekskursje">
+  <input type="checkbox" id="Amor">
+  <input type="checkbox" id="Foto">
+  <input type="checkbox" id="Remonty">
+  <input type="checkbox" id="Piwnica">
+  <input type="checkbox" id="Jezyk">
+  <input type="checkbox" id="Zdrowie">
+
+</div>
+    
+
     
     
     <div class="panel">
@@ -1699,6 +1720,23 @@ function saveCurrentDay() {
     GRY: getNumber("GRY"),
     MUZYKA: getNumber("MUZYKA"),
     KONCERTY: getNumber("KONCERTY"),
+
+    Apps: document.getElementById("Apps")?.checked || false,
+    Ksiazka: document.getElementById("Ksiazka")?.checked || false,
+    Akai: document.getElementById("Akai")?.checked || false,
+    Pamiec: document.getElementById("Pamiec")?.checked || false,
+    Prepp: document.getElementById("Prepp")?.checked || false,
+    Strzelnica: document.getElementById("Strzelnica")?.checked || false,
+    Lacznosc: document.getElementById("Lacznosc")?.checked || false,
+    Chrzciny: document.getElementById("Chrzciny")?.checked || false,
+    Ekskursje: document.getElementById("Ekskursje")?.checked || false,
+    Amor: document.getElementById("Amor")?.checked || false,
+    Foto: document.getElementById("Foto")?.checked || false,
+    Remonty: document.getElementById("Remonty")?.checked || false,
+    Piwnica: document.getElementById("Piwnica")?.checked || false,
+    Jezyk: document.getElementById("Jezyk")?.checked || false,
+    Zdrowie: document.getElementById("Zdrowie")?.checked || false
+  
   };
 
   console.log("PAYLOAD:", payload);
@@ -2711,6 +2749,65 @@ lucide.createIcons();
   restoreHabits(row);
   restoreResolutio(row);
 }
+
+const consiliaMap = {
+  "Apps": "Apps",
+  "Ksiazka": "Ksiazka",
+  "AKAI": "Akai",
+  "Pamiec": "Pamiec",
+  "Prepp": "Prepp",
+  "Strzelnica": "Strzelnica",
+  "Lacznosc": "Lacznosc",
+  "Chrzciny": "Chrzciny",
+  "Ekskursje": "Ekskursje",
+  "Amor": "Amor",
+  "Foto": "Foto",
+  "Remonty": "Remonty",
+  "Piwnica": "Piwnica",
+  "Jezyk": "Jezyk",
+  "Zdrowie": "Zdrowie"
+};
+
+document.querySelectorAll(".consilia .habit").forEach(tile => {
+  tile.addEventListener("click", () => {
+
+    tile.classList.toggle("active");
+
+    const label = tile.innerText.trim();
+    const id = consiliaMap[label];
+
+    const input = document.getElementById(id);
+    if (input) {
+      input.checked = tile.classList.contains("active");
+    }
+
+    saveCurrentDay(); // 🔥 zapis od razu
+  });
+});
+
+    function restoreConsilia(row) {
+  if (!row) return;
+
+  const fields = [
+    "Apps","Ksiazka","Akai","Pamiec","Prepp","Strzelnica",
+    "Lacznosc","Chrzciny","Ekskursje","Amor","Foto",
+    "Remonty","Piwnica","Jezyk","Zdrowie"
+  ];
+
+  fields.forEach(f => {
+    const val = row[f] === true || row[f] === "TRUE";
+
+    const input = document.getElementById(f);
+    if (input) input.checked = val;
+
+    document.querySelectorAll(".consilia .habit").forEach(tile => {
+      if (tile.innerText.trim().toLowerCase() === f.toLowerCase()) {
+        tile.classList.toggle("active", val);
+      }
+    });
+  });
+}
+
     
 
 async function initAll() {

@@ -2690,13 +2690,7 @@ initMetricsState();
 
 setTimeout(initMonthView, 50);
 
-function initConsilia() {
-  document.querySelectorAll(".consilia-item").forEach(item => {
-    item.addEventListener("click", () => {
-      item.classList.toggle("active");
-    });
-  });
-}
+
     
 function loadTasks() {
   return new Promise(resolve => {
@@ -2776,6 +2770,7 @@ lucide.createIcons();
 
   restoreHabits(row);
   restoreResolutio(row);
+  restoreConsilia(row); // 🔥 TO BYŁ BRAK
 }
 
 const consiliaMap = {
@@ -2799,16 +2794,22 @@ const consiliaMap = {
 document.querySelectorAll(".consilia-item").forEach(tile => {
   tile.addEventListener("click", () => {
 
-    tile.classList.toggle("active");
-
     const id = tile.dataset.id;
-
     const input = document.getElementById(id);
-    if (input) {
-      input.checked = tile.classList.contains("active");
+
+    if (!input) {
+      console.warn("Brak inputa dla:", id);
+      return;
     }
 
-    saveCurrentDay();
+    const newValue = !input.checked;
+    input.checked = newValue;
+
+    tile.classList.toggle("active", newValue);
+
+    console.log("CONSILIA CLICK:", id, newValue);
+
+    saveCurrentDay(); // 🔥 zapis
   });
 });
 
@@ -2845,25 +2846,19 @@ document.querySelectorAll(".consilia-item").forEach(tile => {
 
     
 
-    function restoreConsilia(row) {
+   function restoreConsilia(row) {
   if (!row) return;
 
-  const fields = [
-    "Apps","Ksiazka","Akai","Pamiec","Prepp","Strzelnica",
-    "Lacznosc","Chrzciny","Ekskursje","Amor","Foto",
-    "Remonty","Piwnica","Jezyk","Zdrowie"
-  ];
+  document.querySelectorAll(".consilia-item").forEach(tile => {
+    const id = tile.dataset.id;
+    const val = row[id] === true || row[id] === "TRUE";
 
-  fields.forEach(f => {
-    const val = row[f] === true || row[f] === "TRUE";
-
-    const input = document.getElementById(f);
+    const input = document.getElementById(id);
     if (input) input.checked = val;
 
-    const tile = document.querySelector(`.consilia-item[data-id="${f}"]`);
-    if (tile) {
-      tile.classList.toggle("active", val);
-    }
+    tile.classList.toggle("active", val);
+
+    console.log("RESTORE:", id, val);
   });
 }
     
@@ -2878,7 +2873,6 @@ async function initAll() {
       initTasks(),
       initYearView(),
       initDayState(),
-      initConsilia(),
       initConsiliaState()
     ]);
 

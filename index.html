@@ -2800,6 +2800,38 @@ document.querySelectorAll(".consilia .habit").forEach(tile => {
   });
 });
 
+    function loadConsilia() {
+  return new Promise(resolve => {
+    const cb = "cb_consilia_" + Date.now();
+
+    window[cb] = data => {
+      resolve(data);
+      delete window[cb];
+    };
+
+    const script = document.createElement("script");
+    script.src = BASE_URL + "?mode=consilia&callback=" + cb;
+
+    document.body.appendChild(script);
+  });
+}
+
+    async function initConsiliaState() {
+  const data = await loadConsilia();
+
+  const today = getTodayLocal();
+
+  const row = data.find(r =>
+    normalizeDate(r.date) === today
+  );
+
+  console.log("CONSILIA ROW:", row);
+
+  restoreConsilia(row);
+}
+
+    
+
     function restoreConsilia(row) {
   if (!row) return;
 
@@ -2835,7 +2867,8 @@ async function initAll() {
       initTasks(),
       initYearView(),
       initDayState(),
-      initConsilia()
+      initConsilia(),
+      initConsiliaState()
     ]);
 
   } catch (e) {

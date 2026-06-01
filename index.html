@@ -2783,23 +2783,23 @@ const consiliaMap = {
   "Zdrowie": "Zdrowie"
 };
 
-document.querySelectorAll(".consilia .habit").forEach(tile => {
+document.querySelectorAll(".consilia-item").forEach(tile => {
   tile.addEventListener("click", () => {
 
     tile.classList.toggle("active");
 
-    const label = tile.innerText.trim();
-    const id = consiliaMap[label];
+    const id = tile.dataset.id;
 
     const input = document.getElementById(id);
     if (input) {
       input.checked = tile.classList.contains("active");
     }
 
-    saveCurrentDay(); // 🔥 zapis od razu
+    saveCurrentDay();
   });
 });
 
+    
     function loadConsilia() {
   return new Promise(resolve => {
     const cb = "cb_consilia_" + Date.now();
@@ -2847,14 +2847,12 @@ document.querySelectorAll(".consilia .habit").forEach(tile => {
     const input = document.getElementById(f);
     if (input) input.checked = val;
 
-    document.querySelectorAll(".consilia .habit").forEach(tile => {
-      if (tile.innerText.trim().toLowerCase() === f.toLowerCase()) {
-        tile.classList.toggle("active", val);
-      }
-    });
+    const tile = document.querySelector(`.consilia-item[data-id="${f}"]`);
+    if (tile) {
+      tile.classList.toggle("active", val);
+    }
   });
 }
-
     
 
 async function initAll() {

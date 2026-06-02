@@ -2085,6 +2085,9 @@ async function initMonthView() {
   loadConsilia()
 ]);
 
+console.log("CONSILIA DATA SAMPLE:", consiliaData.slice(0,5));
+console.log("TEST CONSILIA AMOR:", countConsilia(consiliaData, "Amor"));
+  
   const key = getCurrentMonthKey();
   const targetRow = targets.find(r => String(r.month).trim() === key);
 
@@ -2936,7 +2939,6 @@ const consiliaFields = [
 
   return count;
 
-      console.log("TEST CONSILIA:", countConsilia(consiliaData, "Amor"));
 }
 
 

@@ -2077,9 +2077,13 @@ if (countEl) {
  
 
 async function initMonthView() {
-  const data = await loadMonthData();
-  const targets = await loadTargets();
-  const cultura = await loadCultura();
+  
+  const [data, targets, cultura, consiliaData] = await Promise.all([
+  loadMonthData(),
+  loadTargets(),
+  loadCultura(),
+  loadConsilia()
+]);
 
   const key = getCurrentMonthKey();
   const targetRow = targets.find(r => String(r.month).trim() === key);
@@ -2911,14 +2915,14 @@ const consiliaFields = [
   "Remonty","Piwnica","Jezyk","Zdrowie"
 ];
 
-    function countConsilia(data, field) {
+    function countConsilia(consiliaData, field) {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
 
   let count = 0;
 
-  data.forEach(row => {
+  consiliaData.forEach(row => {
     if (!row.date) return;
 
     const d = new Date(row.date);
@@ -2934,10 +2938,10 @@ const consiliaFields = [
 }
 
 
-    function calculateConsiliaProgress(data, field, target) {
+    function calculateConsiliaProgress(consiliaData, field, target) {
   if (!target) return 0;
 
-  const count = countConsilia(data, field);
+  const count = countConsilia(consiliaData, field);
 
   return Math.min(100, Math.round((count / target) * 100));
 }

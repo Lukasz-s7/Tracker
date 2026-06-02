@@ -2140,6 +2140,24 @@ drawHabitRing(percent);
 
 renderDaysLeft();
 renderCultura(cultura);
+
+  // ===== CONSILIA =====
+consiliaFields.forEach(field => {
+
+  const target = Number(targetRow[field] || 0);
+
+  const count = countConsilia(data, field);
+  const percent = calculateConsiliaProgress(data, field, target);
+
+  setProgress(field.toLowerCase() + "_progress", percent);
+
+  const countEl = document.getElementById(field.toLowerCase() + "_count");
+
+  if (countEl) {
+    countEl.innerText = `${count}/${target}`;
+  }
+
+});
   
 }
 
@@ -2885,6 +2903,48 @@ document.querySelectorAll(".consilia-item").forEach(tile => {
     console.log("RESTORE:", id, val);
   });
 }
+
+const consiliaFields = [
+  "Apps","Ksiazka","Akai",
+  "Pamiec","Prepp","Strzelnica","Lacznosc",
+  "Chrzciny","Ekskursje","Amor","Foto",
+  "Remonty","Piwnica","Jezyk","Zdrowie"
+];
+
+    function countConsilia(data, field) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  let count = 0;
+
+  data.forEach(row => {
+    if (!row.date) return;
+
+    const d = new Date(row.date);
+
+    if (d.getFullYear() === year && d.getMonth() === month) {
+      if (row[field] === true || row[field] === "TRUE") {
+        count++;
+      }
+    }
+  });
+
+  return count;
+}
+
+
+    function calculateConsiliaProgress(data, field, target) {
+  if (!target) return 0;
+
+  const count = countConsilia(data, field);
+
+  return Math.min(100, Math.round((count / target) * 100));
+}
+
+
+
+
     
 
 async function initAll() {

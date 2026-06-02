@@ -2147,20 +2147,18 @@ renderDaysLeft();
 renderCultura(cultura);
 
   // ===== CONSILIA =====
-consiliaFields.forEach(field => {
+Object.keys(consiliaMap).forEach(field => {
+  const target = Number(targetRow[field] || 0);
 
-    const target = Number(targetRow[field] || 0);
-  const count = countConsilia(data, field);
-  const percent = calculateConsiliaProgress(data, field, target);
+  const count = countConsilia(consiliaData, field); // 🔥 KLUCZ
+  const percent = calculateConsiliaProgress(consiliaData, field, target);
 
   setProgress(field.toLowerCase() + "_progress", percent);
 
   const countEl = document.getElementById(field.toLowerCase() + "_count");
-
   if (countEl) {
     countEl.innerText = `${count}/${target}`;
   }
-
 });
   
 }
@@ -2926,16 +2924,16 @@ const consiliaFields = [
     if (!row.date) return;
 
     const d = new Date(row.date);
+    const local = new Date(d.getFullYear(), d.getMonth(), d.getDate());
 
-    if (d.getFullYear() === year && d.getMonth() === month) {
-      if (row[field] === true || row[field] === "TRUE") {
+    if (local.getFullYear() === year && local.getMonth() === month) {
+      if (String(row[field]).toLowerCase() === "true") {
         count++;
       }
     }
   });
 
   return count;
-
 }
 
 

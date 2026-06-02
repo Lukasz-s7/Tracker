@@ -2085,9 +2085,7 @@ async function initMonthView() {
   loadConsilia()
 ]);
 
-console.log("CONSILIA DATA SAMPLE:", consiliaData.slice(0,5));
-console.log("TEST CONSILIA AMOR:", countConsilia(consiliaData, "Amor"));
-  
+ 
   const key = getCurrentMonthKey();
   const targetRow = targets.find(r => String(r.month).trim() === key);
 
@@ -2151,13 +2149,7 @@ renderCultura(cultura);
   // ===== CONSILIA =====
 consiliaFields.forEach(field => {
 
-  console.log("FIELDS CHECK:", {
-  count: countConsilia(consiliaData, "Zdrowie"),
-  target: targetRow["Zdrowie"],
-  element: document.getElementById("zdrowie_progress")
-});
-
-  const target = Number(targetRow[field] || 0);
+    const target = Number(targetRow[field] || 0);
   const count = countConsilia(data, field);
   const percent = calculateConsiliaProgress(data, field, target);
 

@@ -2151,8 +2151,13 @@ renderCultura(cultura);
   // ===== CONSILIA =====
 consiliaFields.forEach(field => {
 
-  const target = Number(targetRow[field] || 0);
+  console.log("FIELDS CHECK:", {
+  count: countConsilia(consiliaData, "Zdrowie"),
+  target: targetRow["Zdrowie"],
+  element: document.getElementById("zdrowie_progress")
+});
 
+  const target = Number(targetRow[field] || 0);
   const count = countConsilia(data, field);
   const percent = calculateConsiliaProgress(data, field, target);
 
